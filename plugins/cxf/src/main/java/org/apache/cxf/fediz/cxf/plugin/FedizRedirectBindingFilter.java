@@ -30,22 +30,21 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.UUID;
 
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-import javax.ws.rs.HttpMethod;
-import javax.ws.rs.container.ContainerRequestContext;
-import javax.ws.rs.container.ContainerResponseContext;
-import javax.ws.rs.container.ContainerResponseFilter;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.Cookie;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.Response.ResponseBuilder;
-
 import org.w3c.dom.Document;
 
+import jakarta.servlet.ServletOutputStream;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
+import jakarta.ws.rs.HttpMethod;
+import jakarta.ws.rs.container.ContainerRequestContext;
+import jakarta.ws.rs.container.ContainerResponseContext;
+import jakarta.ws.rs.container.ContainerResponseFilter;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.Cookie;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.Response.ResponseBuilder;
 import org.apache.cxf.fediz.core.FederationConstants;
 import org.apache.cxf.fediz.core.RequestState;
 import org.apache.cxf.fediz.core.SAMLSSOConstants;
@@ -445,15 +444,15 @@ public class FedizRedirectBindingFilter extends AbstractServiceProviderFilter
                 LOG.error("Invalid RelayState/WCTX");
                 throw ExceptionUtils.toBadRequestException(null, null);
             }
-    
+
             wfReq.setState(state);
             wfReq.setRequestState(getStateManager().removeRequestState(state));
-    
+
             if (wfReq.getRequestState() == null) {
                 LOG.error("Missing Request State");
                 throw ExceptionUtils.toBadRequestException(null, null);
             }
-    
+
             if (CookieUtils.isStateExpired(wfReq.getRequestState().getCreatedAt(), false, 0,
                                            getStateTimeToLive())) {
                 LOG.error("EXPIRED_REQUEST_STATE");

@@ -35,7 +35,6 @@ import java.util.UUID;
 
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.servlet.http.HttpServletRequest;
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -43,6 +42,7 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.NodeList;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.cxf.fediz.common.STSUtil;
 import org.apache.cxf.fediz.common.SecurityTestUtil;
 import org.apache.cxf.fediz.core.AbstractSAMLCallbackHandler;
@@ -1428,7 +1428,7 @@ public class SAMLResponseTest {
             // expected
         }
     }
-    
+
     @org.junit.jupiter.api.Test
     public void validateSAMLResponseWithRequiredClaims() throws Exception {
         // Mock up a Request
@@ -1479,7 +1479,7 @@ public class SAMLResponseTest {
         assertClaims(wfRes.getClaims(), AbstractSAMLCallbackHandler.CLAIM_TYPE_LANGUAGE);
         assertClaims(wfRes.getClaims(), ClaimTypes.FIRSTNAME);
     }
-    
+
     @org.junit.jupiter.api.Test
     public void validateSAMLResponseWithoutRequiredClaims() throws Exception {
         // Mock up a Request

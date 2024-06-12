@@ -29,8 +29,6 @@ import java.util.Collections;
 
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
 import javax.xml.parsers.ParserConfigurationException;
 
 import org.w3c.dom.Document;
@@ -38,6 +36,8 @@ import org.w3c.dom.Element;
 
 import org.xml.sax.SAXException;
 
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import org.apache.cxf.fediz.common.STSUtil;
 import org.apache.cxf.fediz.common.SecurityTestUtil;
 import org.apache.cxf.fediz.core.Claim;
@@ -105,7 +105,7 @@ public class ClaimsProcessorTest {
 
     private static final String ROLE_DELIMITER = ";";
     private static final String ROLE_URI = "http://someserver:8080/path/roles.uri";
-    
+
     private static final String COPY_CLAIMS_PROCESSOR_CLASS = "org.apache.cxf.fediz.common.ClaimCopyProcessor";
     private static final String MUTATE_CLAIMS_PROCESSOR_CLASS = "org.apache.cxf.fediz.common.ClaimMutateProcessor";
 
@@ -203,7 +203,7 @@ public class ClaimsProcessorTest {
         CallbackType issuer = new CallbackType();
         issuer.setValue(ISSUER);
         protocol.setIssuer(issuer);
-        
+
         if (claimsProcessorClass != null) {
             CallbackType cpc = new CallbackType();
             cpc.setType(ArgumentType.CLASS);
@@ -219,7 +219,7 @@ public class ClaimsProcessorTest {
     public void testWithoutCustomClaimProcessor() throws Exception {
         String originalClaimValue = "Alice";
         String claimsProcessorClass = null;
-        
+
         FedizResponse wfRes = performLogin(ClaimTypes.FIRSTNAME.toString(), originalClaimValue, claimsProcessorClass);
 
         Object claimValue = null;
@@ -231,12 +231,12 @@ public class ClaimsProcessorTest {
 
         Assertions.assertEquals(originalClaimValue, claimValue);
     }
-    
+
     @org.junit.jupiter.api.Test
     public void testCustomClaimProcessor() throws Exception {
         String originalClaimValue = "Alice";
         String claimsProcessorClass = COPY_CLAIMS_PROCESSOR_CLASS;
-        
+
         FedizResponse wfRes = performLogin(ClaimTypes.FIRSTNAME.toString(), originalClaimValue, claimsProcessorClass);
 
         Object claimValue = null;
@@ -248,20 +248,20 @@ public class ClaimsProcessorTest {
 
         Assertions.assertEquals(originalClaimValue, claimValue);
     }
-    
+
     @org.junit.jupiter.api.Test
     public void testClaimModificationProcessor() throws Exception {
         String originalClaimValue = "Alice";
         String claimsProcessorClass = MUTATE_CLAIMS_PROCESSOR_CLASS;
-        
+
         FedizResponse wfRes =
             performLogin(ClaimTypes.PRIVATE_PERSONAL_IDENTIFIER.toString(), originalClaimValue, claimsProcessorClass);
 
         Object firstname = null;
         Object lastname = null;
-        
+
         Assertions.assertEquals(2, wfRes.getClaims().size());
-        
+
         for (Claim c : wfRes.getClaims()) {
             if (ClaimTypes.FIRSTNAME.equals(c.getClaimType())) {
                 firstname = c.getValue();

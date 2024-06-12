@@ -36,11 +36,11 @@ import java.util.UUID;
 import java.util.zip.DataFormatException;
 
 import javax.security.auth.DestroyFailedException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.cxf.fediz.core.Claim;
 import org.apache.cxf.fediz.core.RequestState;
 import org.apache.cxf.fediz.core.SAMLSSOConstants;
@@ -133,7 +133,7 @@ public class SAMLProcessorImpl extends AbstractFedizProcessor {
     private RequestState processRelayState(
         String relayState, RequestState requestState, FedizContext config
     ) throws ProcessingException {
-        if (config.isRequestStateValidation() 
+        if (config.isRequestStateValidation()
             && (relayState.getBytes().length <= 0 || relayState.getBytes().length > 80)) {
             LOG.error("Invalid RelayState");
             throw new ProcessingException(TYPE.INVALID_REQUEST);
@@ -142,7 +142,7 @@ public class SAMLProcessorImpl extends AbstractFedizProcessor {
     }
 
     protected FedizResponse processSignInRequest(FedizRequest request, FedizContext config) throws ProcessingException {
-        
+
         SAMLProtocol protocol = (SAMLProtocol)config.getProtocol();
         RequestState requestState =
             processRelayState(request.getState(), request.getRequestState(), config);
@@ -228,7 +228,7 @@ public class SAMLProcessorImpl extends AbstractFedizProcessor {
         }
 
         List<String> roles = getRoles(claims, config.getProtocol().getRoleURI());
-        
+
         FedizResponse fedResponse = new FedizResponse(
                 validatorResponse.getUsername(), validatorResponse.getIssuer(),
                 roles, claims,
@@ -254,13 +254,13 @@ public class SAMLProcessorImpl extends AbstractFedizProcessor {
                 LOG.debug("We must have a decryption key password to decrypt encrypted tokens");
                 throw new ProcessingException(TYPE.BAD_REQUEST);
             }
-     
+
             String keyAlias = decryptionKeyManager.getKeyAlias();
             if (keyAlias == null) {
                 LOG.debug("No alias configured for decrypt");
                 throw new ProcessingException(TYPE.BAD_REQUEST);
             }
-            
+
             try {
                 // Get the private key
                 PrivateKey privateKey = decryptionKeyManager.getCrypto().getPrivateKey(keyAlias, keyPassword);
@@ -268,24 +268,24 @@ public class SAMLProcessorImpl extends AbstractFedizProcessor {
                     LOG.debug("No private key available");
                     throw new ProcessingException(TYPE.BAD_REQUEST);
                 }
-                
+
                 BasicX509Credential cred = new BasicX509Credential(
                     CertsUtils.getX509CertificateFromCrypto(decryptionKeyManager.getCrypto(), keyAlias));
                 cred.setPrivateKey(privateKey);
-                
+
                 StaticKeyInfoCredentialResolver resolver = new StaticKeyInfoCredentialResolver(cred);
-                
+
                 ChainingEncryptedKeyResolver keyResolver = new ChainingEncryptedKeyResolver(
                         Arrays.asList(
                                 new InlineEncryptedKeyResolver(),
-                                new EncryptedElementTypeEncryptedKeyResolver(), 
+                                new EncryptedElementTypeEncryptedKeyResolver(),
                                 new SimpleRetrievalMethodEncryptedKeyResolver(),
                                 new SimpleKeyInfoReferenceEncryptedKeyResolver()));
-                
+
                 Decrypter decrypter = new Decrypter(null, resolver, keyResolver);
-                
+
                 for (EncryptedAssertion encryptedAssertion : responseObject.getEncryptedAssertions()) {
-                
+
                     Assertion decrypted = decrypter.decrypt(encryptedAssertion);
                     Element decryptedToken = decrypted.getDOM();
                     if (LOG.isDebugEnabled()) {
@@ -416,12 +416,12 @@ public class SAMLProcessorImpl extends AbstractFedizProcessor {
             ssoResponseValidator.setIssuerIDP(requestState != null ? requestState.getIdpServiceAddress() : null);
             ssoResponseValidator.setRequestId(requestState != null ? requestState.getRequestId() : null);
             ssoResponseValidator.setSpIdentifier(requestState != null ? requestState.getIssuerId() : null);
-            
+
             boolean doNotEnforceAssertionsSigned =
                     ((SAMLProtocol)config.getProtocol()).isDoNotEnforceEncryptedAssertionsSigned()
                     && !samlResponse.getEncryptedAssertions().isEmpty();
             ssoResponseValidator.setEnforceAssertionsSigned(!doNotEnforceAssertionsSigned);
-            
+
             ssoResponseValidator.setReplayCache(config.getTokenReplayCache());
 
             return ssoResponseValidator.validateSamlResponse(samlResponse, false);
@@ -585,7 +585,7 @@ public class SAMLProcessorImpl extends AbstractFedizProcessor {
         byte[] signBytes = signature.sign();
 
         String encodedSignature = Base64.getEncoder().encodeToString(signBytes);
-        
+
         // Clean the private key from memory when we're done
         try {
             privateKey.destroy();

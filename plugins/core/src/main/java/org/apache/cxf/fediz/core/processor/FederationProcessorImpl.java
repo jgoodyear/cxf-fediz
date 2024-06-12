@@ -40,11 +40,11 @@ import java.util.regex.Pattern;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.servlet.http.HttpServletRequest;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.cxf.fediz.core.Claim;
 import org.apache.cxf.fediz.core.FederationConstants;
 import org.apache.cxf.fediz.core.RequestState;
@@ -214,7 +214,7 @@ public class FederationProcessorImpl extends AbstractFedizProcessor {
         }
 
         List<Claim> claims = validatorResponse.getClaims();
-        
+
         testForMandatoryClaims(config.getProtocol().getRoleURI(),
                 config.getProtocol().getClaimTypesRequested(),
                 claims);
@@ -228,7 +228,7 @@ public class FederationProcessorImpl extends AbstractFedizProcessor {
         }
 
         List<String> roles = getRoles(claims, config.getProtocol().getRoleURI());
-        
+
         FedizResponse fedResponse = new FedizResponse(validatorResponse.getUsername(), validatorResponse.getIssuer(),
                                                       roles, claims,
                                                       validatorResponse.getAudience(), created, expires, rst,

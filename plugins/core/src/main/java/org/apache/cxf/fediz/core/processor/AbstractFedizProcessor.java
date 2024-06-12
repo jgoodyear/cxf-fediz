@@ -30,8 +30,8 @@ import java.util.Map;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.servlet.http.HttpServletRequest;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.cxf.fediz.core.Claim;
 import org.apache.cxf.fediz.core.config.FedizContext;
 import org.apache.cxf.fediz.core.exception.ProcessingException;
@@ -109,8 +109,8 @@ public abstract class AbstractFedizProcessor implements FedizProcessor {
     protected String extractFullContextPath(HttpServletRequest request) throws MalformedURLException {
         return StringUtils.extractFullContextPath(request);
     }
-    
-    
+
+
     protected List<String> getRoles(List<Claim> claims, String roleURI) {
         if (roleURI == null || roleURI.isEmpty()) {
             return null;
@@ -141,7 +141,7 @@ public abstract class AbstractFedizProcessor implements FedizProcessor {
         }
         return roles;
     }
-    
+
     protected String resolveReply(HttpServletRequest request, FedizContext config) throws IOException,
         UnsupportedCallbackException {
         Object replyObj = config.getProtocol().getReply();

@@ -28,9 +28,8 @@ import java.net.URI;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.xml.bind.JAXBContext;
-import javax.xml.bind.JAXBException;
-
+import jakarta.xml.bind.JAXBContext;
+import jakarta.xml.bind.JAXBException;
 import org.apache.cxf.fediz.common.SecurityTestUtil;
 import org.apache.cxf.fediz.core.ClaimTypes;
 import org.apache.cxf.fediz.core.config.jaxb.ArgumentType;
@@ -425,7 +424,7 @@ public class FedizConfigurationTest {
         Assertions.assertFalse(config.isTokenExpirationValidation());
         Assertions.assertTrue(config.isRequestStateValidation());
     }
-    
+
     @org.junit.jupiter.api.Test
     public void testClaimProcessor() throws JAXBException, IOException {
         final JAXBContext jaxbContext = JAXBContext.newInstance(FedizConfig.class);
@@ -435,12 +434,12 @@ public class FedizConfigurationTest {
         jaxbContext.createMarshaller().marshal(configOut, writer);
         StringReader reader = new StringReader(writer.toString());
         configurator.loadConfig(reader);
-        
+
         FedizContext fedContext = configurator.getFedizContext(CONFIG_NAME);
         List<ClaimsProcessor> claimsProcessor = fedContext.getClaimsProcessor();
         Assertions.assertNotNull(claimsProcessor);
         Assertions.assertEquals(1, claimsProcessor.size());
-        
+
         List<org.apache.cxf.fediz.core.Claim> inputClaims = new ArrayList<>();
         org.apache.cxf.fediz.core.Claim claim = new org.apache.cxf.fediz.core.Claim();
         claim.setClaimType(URI.create(CLAIM_TYPE_1));
