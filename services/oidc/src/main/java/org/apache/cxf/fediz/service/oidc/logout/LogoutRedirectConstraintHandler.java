@@ -27,8 +27,8 @@ import java.util.regex.Pattern;
 import javax.security.auth.callback.Callback;
 import javax.security.auth.callback.CallbackHandler;
 import javax.security.auth.callback.UnsupportedCallbackException;
-import javax.servlet.http.HttpServletRequest;
 
+import jakarta.servlet.http.HttpServletRequest;
 import org.apache.cxf.fediz.core.spi.ReplyConstraintCallback;
 import org.apache.cxf.fediz.service.oidc.handler.hrd.ApplicationContextProvider;
 import org.apache.cxf.rs.security.oauth2.common.Client;
@@ -37,7 +37,7 @@ import org.apache.cxf.rs.security.oauth2.utils.OAuthConstants;
 import org.springframework.context.ApplicationContext;
 
 public class LogoutRedirectConstraintHandler implements CallbackHandler {
-    
+
     private static final String POST_LOGOUT_REDIRECT_URIS = "post_logout_redirect_uris";
 
     @Override
@@ -75,7 +75,7 @@ public class LogoutRedirectConstraintHandler implements CallbackHandler {
                 return Pattern.compile("(" + String.join("|", uris) + ")");
             }
         }
-        
+
         return null;
     }
 

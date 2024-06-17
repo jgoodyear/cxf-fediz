@@ -27,6 +27,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.Key;
 import java.security.cert.X509Certificate;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
@@ -75,7 +76,6 @@ import org.apache.xml.security.encryption.EncryptedData;
 import org.apache.xml.security.encryption.EncryptedKey;
 import org.apache.xml.security.encryption.XMLCipher;
 import org.apache.xml.security.keys.content.X509Data;
-import org.joda.time.DateTime;
 import org.opensaml.saml.saml2.core.Response;
 import org.opensaml.saml.saml2.core.Status;
 
@@ -336,7 +336,7 @@ public class SAMLEncryptedResponseTest {
         SubjectConfirmationDataBean subjectConfirmationData = new SubjectConfirmationDataBean();
         subjectConfirmationData.setAddress(TEST_CLIENT_ADDRESS);
         subjectConfirmationData.setInResponseTo(requestId);
-        subjectConfirmationData.setNotAfter(new DateTime().plusMinutes(5));
+        subjectConfirmationData.setNotAfter(Instant.now().plusSeconds(5 * 60));
         subjectConfirmationData.setRecipient(TEST_REQUEST_URL);
         saml2CallbackHandler.setSubjectConfirmationData(subjectConfirmationData);
 

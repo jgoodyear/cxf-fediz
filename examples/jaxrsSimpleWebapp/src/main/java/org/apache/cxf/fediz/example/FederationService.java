@@ -22,13 +22,6 @@ package org.apache.cxf.fediz.example;
 import java.io.StringWriter;
 import java.security.Principal;
 
-import javax.ws.rs.GET;
-import javax.ws.rs.Path;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-import javax.ws.rs.core.UriInfo;
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Transformer;
 import javax.xml.transform.TransformerFactory;
@@ -37,6 +30,13 @@ import javax.xml.transform.stream.StreamResult;
 
 import org.w3c.dom.Element;
 
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
+import jakarta.ws.rs.core.UriInfo;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.cxf.fediz.core.Claim;
 import org.apache.cxf.fediz.core.ClaimCollection;

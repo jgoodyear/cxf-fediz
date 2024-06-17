@@ -324,7 +324,7 @@ public class SAMLProcessorImpl extends AbstractFedizProcessor {
             throw new ProcessingException(TYPE.INVALID_REQUEST);
         }
 
-        Instant issueInstant = logoutResponse.getIssueInstant().toDate().toInstant();
+        Instant issueInstant = logoutResponse.getIssueInstant();
 
         FedizResponse fedResponse = new FedizResponse(
             null, logoutResponse.getIssuer().getValue(),

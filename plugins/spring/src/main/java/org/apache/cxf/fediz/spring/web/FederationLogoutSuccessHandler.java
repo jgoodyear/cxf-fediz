@@ -33,7 +33,7 @@ import org.apache.cxf.fediz.core.processor.RedirectionResponse;
 import org.apache.cxf.fediz.spring.FederationConfig;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
 
@@ -43,7 +43,7 @@ public class FederationLogoutSuccessHandler implements LogoutSuccessHandler {
 
     private FederationConfig federationConfig;
 
-    @Required
+    @Autowired
     public void setFederationConfig(FederationConfig federationConfig) {
         this.federationConfig = federationConfig;
     }

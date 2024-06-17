@@ -125,7 +125,7 @@ public class SAMLSSOResponseValidator {
                     // Store Session NotOnOrAfter
                     for (AuthnStatement authnStatment : assertion.getAuthnStatements()) {
                         if (authnStatment.getSessionNotOnOrAfter() != null) {
-                            sessionNotOnOrAfter = authnStatment.getSessionNotOnOrAfter().toDate().toInstant();
+                            sessionNotOnOrAfter = authnStatment.getSessionNotOnOrAfter();
                         }
                     }
                 }
@@ -219,7 +219,7 @@ public class SAMLSSOResponseValidator {
 
         // We must have a NotOnOrAfter timestamp
         if (subjectConfData.getNotOnOrAfter() == null
-            || subjectConfData.getNotOnOrAfter().isBeforeNow()) {
+            || subjectConfData.getNotOnOrAfter().isBefore(Instant.now())) {
             LOG.debug("Subject Conf Data does not contain NotOnOrAfter or it has expired");
             throw new WSSecurityException(WSSecurityException.ErrorCode.FAILURE, "invalidSAMLsecurity");
         }
@@ -227,7 +227,7 @@ public class SAMLSSOResponseValidator {
         // Need to keep bearer assertion IDs based on NotOnOrAfter to detect replay attacks
         if (postBinding && replayCache != null) {
             if (replayCache.contains(id)) {
-                Instant expires = subjectConfData.getNotOnOrAfter().toDate().toInstant();
+                Instant expires = subjectConfData.getNotOnOrAfter();
                 replayCache.add(id, expires);
             } else {
                 LOG.debug("Replay attack with token id: " + id);

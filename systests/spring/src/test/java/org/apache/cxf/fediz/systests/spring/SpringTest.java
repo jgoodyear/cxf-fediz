@@ -22,8 +22,6 @@ package org.apache.cxf.fediz.systests.spring;
 import java.io.File;
 import java.io.IOException;
 
-import javax.servlet.ServletException;
-
 import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.DomElement;
@@ -32,6 +30,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 
+import jakarta.servlet.ServletException;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;
@@ -170,7 +169,7 @@ public class SpringTest extends AbstractTests {
             + "/j_spring_fediz_security_check";
         csrfAttackTest2(url);
     }
-    
+
     @org.junit.jupiter.api.Test
     public void testNoRequestValidation() throws Exception {
 

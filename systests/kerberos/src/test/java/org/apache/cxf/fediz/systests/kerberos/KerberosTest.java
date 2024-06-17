@@ -27,13 +27,13 @@ import java.util.Base64;
 
 import javax.security.auth.Subject;
 import javax.security.auth.login.LoginContext;
-import javax.servlet.ServletException;
 
 import com.gargoylesoftware.htmlunit.WebClient;
 import com.gargoylesoftware.htmlunit.html.HtmlForm;
 import com.gargoylesoftware.htmlunit.html.HtmlPage;
 import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 
+import jakarta.servlet.ServletException;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;

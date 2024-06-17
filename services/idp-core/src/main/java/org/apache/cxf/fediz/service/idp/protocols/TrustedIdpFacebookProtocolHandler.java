@@ -24,12 +24,11 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.Response;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import jakarta.ws.rs.core.Form;
+import jakarta.ws.rs.core.Response;
 import org.apache.cxf.fediz.service.idp.IdpConstants;
 import org.apache.cxf.fediz.service.idp.domain.Idp;
 import org.apache.cxf.fediz.service.idp.domain.TrustedIdp;

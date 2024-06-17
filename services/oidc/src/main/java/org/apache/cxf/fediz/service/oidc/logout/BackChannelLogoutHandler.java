@@ -26,8 +26,7 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.logging.Logger;
 
-import javax.ws.rs.core.Form;
-
+import jakarta.ws.rs.core.Form;
 import org.apache.cxf.common.logging.LogUtils;
 import org.apache.cxf.common.util.Base64UrlUtility;
 import org.apache.cxf.jaxrs.client.WebClient;
@@ -52,7 +51,7 @@ public class BackChannelLogoutHandler extends JoseJwtProducer {
         "http://schemas.openid.net/event/backchannel-logout";
     private ExecutorService executorService = Executors.newCachedThreadPool();
     private OAuthDataProvider dataProvider;
-        
+
     public void handleLogout(Client client, OidcUserSubject subject, IdToken idTokenHint) {
         // At the moment the only way to find out which RPs a given User is logged in is
         // to check the access tokens - it can not offer a complete solution, for ex
@@ -72,8 +71,8 @@ public class BackChannelLogoutHandler extends JoseJwtProducer {
                 submitBackChannelLogoutRequest(atClient, subject, idTokenHint, uri);
             }
         }
-        
-        
+
+
 
     }
 
@@ -81,19 +80,19 @@ public class BackChannelLogoutHandler extends JoseJwtProducer {
             final IdToken idTokenHint, final String uri) {
         // Application context is expected to contain HttpConduit HTTPS configuration
         final WebClient wc = WebClient.create(uri);
-        IdToken idToken = idTokenHint != null ? idTokenHint : subject.getIdToken(); 
+        IdToken idToken = idTokenHint != null ? idTokenHint : subject.getIdToken();
         JwtClaims claims = new JwtClaims();
         claims.setIssuer(idToken.getIssuer());
         claims.setSubject(idToken.getSubject());
         claims.setAudience(client.getClientId());
         claims.setIssuedAt(System.currentTimeMillis() / 1000);
         claims.setTokenId(Base64UrlUtility.encode(CryptoUtils.generateSecureRandomBytes(16)));
-        claims.setClaim(EVENTS_PROPERTY, 
+        claims.setClaim(EVENTS_PROPERTY,
                 Collections.singletonMap(BACK_CHANNEL_LOGOUT_EVENT, Collections.emptyMap()));
         if (idToken.getName() != null) {
-            claims.setClaim(IdToken.NAME_CLAIM, idToken.getName());    
+            claims.setClaim(IdToken.NAME_CLAIM, idToken.getName());
         }
-        
+
         final String logoutToken = super.processJwt(new JwtToken(claims));
         executorService.submit(new Runnable() {
 
@@ -107,15 +106,15 @@ public class BackChannelLogoutHandler extends JoseJwtProducer {
                     LOG.fine(String.format("%s request failure: %s", uri, ExceptionUtils.getStackTrace(ex)));
                 }
             }
-        
+
         });
-        
+
     }
 
     public void setDataProvider(OAuthDataProvider dataProvider) {
         this.dataProvider = dataProvider;
     }
-    
+
     public void close() {
         executorService.shutdownNow();
     }

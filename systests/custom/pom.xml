@@ -7,9 +7,9 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License. You may obtain a copy of the License at
- 
+
   http://www.apache.org/licenses/LICENSE-2.0
- 
+
   Unless required by applicable law or agreed to in writing,
   software distributed under the License is distributed on an
   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -32,6 +32,11 @@
     <properties>
     </properties>
     <dependencies>
+        <dependency>
+            <groupId>jakarta.xml.soap</groupId>
+            <artifactId>jakarta.xml.soap-api</artifactId>
+            <version>3.0.2</version>
+        </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
             <artifactId>tomcat-embed-core</artifactId>
@@ -56,17 +61,17 @@
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
-        <!--dependency>
-            <groupId>org.apache.cxf</groupId>
-            <artifactId>cxf-rt-bindings-soap</artifactId>
-            <version>${cxf.version}</version>
-            <scope>test</scope>
-        </dependency-->
         <dependency>
             <groupId>org.apache.cxf.services.sts</groupId>
             <artifactId>cxf-services-sts-core</artifactId>
             <version>${cxf.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.glassfish.jaxb</groupId>
+                    <artifactId>jaxb-runtime</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.cxf.fediz.systests</groupId>
@@ -219,7 +224,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${basedir}/target/tomcat/idp/webapps/fediz-idp/WEB-INF</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>${basedir}/src/test/resources/realma</directory>
                                     <includes>

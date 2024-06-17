@@ -26,12 +26,11 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpSession;
-import javax.ws.rs.core.MultivaluedMap;
-import javax.ws.rs.core.UriBuilder;
-
 import org.w3c.dom.Element;
 
+import jakarta.servlet.http.HttpSession;
+import jakarta.ws.rs.core.MultivaluedMap;
+import jakarta.ws.rs.core.UriBuilder;
 import org.apache.cxf.fediz.core.Claim;
 import org.apache.cxf.fediz.core.ClaimCollection;
 import org.apache.cxf.fediz.core.ClaimTypes;
@@ -104,7 +103,11 @@ public class FedizSubjectCreator implements SubjectCreator {
         Assertion saml2Assertion = getSaml2Assertion(samlToken);
         // authInstant
         if (saml2Assertion != null && !saml2Assertion.getAuthnStatements().isEmpty()) {
-            DateTime authInstant = saml2Assertion.getAuthnStatements().get(0).getAuthnInstant();
+            DateTime authInstant = new DateTime(saml2Assertion
+                    .getAuthnStatements()
+                    .get(0)
+                    .getAuthnInstant()
+                    .toEpochMilli());
             idToken.setAuthenticationTime(authInstant.getMillis() / 1000L);
         }
         // Check if default issuer, issuedAt values have to be set

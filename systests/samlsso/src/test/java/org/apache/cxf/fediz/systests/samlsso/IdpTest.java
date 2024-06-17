@@ -34,8 +34,6 @@ import java.util.Collections;
 import java.util.Date;
 import java.util.UUID;
 
-import javax.servlet.ServletException;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
@@ -53,6 +51,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import com.gargoylesoftware.htmlunit.xml.XmlPage;
 
+import jakarta.servlet.ServletException;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;

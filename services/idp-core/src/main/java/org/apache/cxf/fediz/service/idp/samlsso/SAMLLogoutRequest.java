@@ -39,7 +39,7 @@ public class SAMLLogoutRequest extends SAMLAbstractRequest {
     public SAMLLogoutRequest(LogoutRequest logoutRequest) {
         super(logoutRequest);
         if (logoutRequest.getNotOnOrAfter() != null) {
-            notOnOrAfter = logoutRequest.getNotOnOrAfter().toDate();
+            notOnOrAfter = Date.from(logoutRequest.getNotOnOrAfter());
         }
 
         if (logoutRequest.getNameID() != null) {

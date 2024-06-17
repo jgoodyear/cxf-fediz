@@ -28,6 +28,7 @@ import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
 import java.security.PrivateKey;
 import java.security.cert.X509Certificate;
+import java.time.Instant;
 import java.util.Base64;
 import java.util.Collections;
 import java.util.List;
@@ -689,7 +690,7 @@ public class SAMLResponseTest {
         SubjectConfirmationDataBean subjectConfirmationData = new SubjectConfirmationDataBean();
         subjectConfirmationData.setAddress(TEST_CLIENT_ADDRESS);
         subjectConfirmationData.setInResponseTo(requestId);
-        subjectConfirmationData.setNotAfter(new DateTime().plusMinutes(5));
+        subjectConfirmationData.setNotAfter(Instant.now().plusSeconds(5 * 60));
         subjectConfirmationData.setRecipient(TEST_REQUEST_URL);
         callbackHandler.setSubjectConfirmationData(subjectConfirmationData);
 
@@ -910,10 +911,10 @@ public class SAMLResponseTest {
         callbackHandler.setSubjectName(TEST_USER);
 
         ConditionsBean cp = new ConditionsBean();
-        DateTime currentTime = new DateTime();
+        Instant currentTime = Instant.now();
         currentTime = currentTime.minusSeconds(60);
         cp.setNotAfter(currentTime);
-        currentTime = new DateTime();
+        currentTime = Instant.now();
         currentTime = currentTime.minusSeconds(300);
         cp.setNotBefore(currentTime);
         AudienceRestrictionBean audienceRestriction = new AudienceRestrictionBean();
@@ -925,7 +926,7 @@ public class SAMLResponseTest {
         SubjectConfirmationDataBean subjectConfirmationData = new SubjectConfirmationDataBean();
         subjectConfirmationData.setAddress(TEST_CLIENT_ADDRESS);
         subjectConfirmationData.setInResponseTo(requestId);
-        subjectConfirmationData.setNotAfter(new DateTime().plusMinutes(5));
+        subjectConfirmationData.setNotAfter(Instant.now().plusSeconds(5 * 60));
         subjectConfirmationData.setRecipient(TEST_REQUEST_URL);
         callbackHandler.setSubjectConfirmationData(subjectConfirmationData);
 
@@ -988,10 +989,10 @@ public class SAMLResponseTest {
         callbackHandler.setSubjectName(TEST_USER);
 
         ConditionsBean cp = new ConditionsBean();
-        DateTime currentTime = new DateTime();
+        Instant currentTime = Instant.now();
         currentTime = currentTime.plusSeconds(300);
         cp.setNotAfter(currentTime);
-        currentTime = new DateTime();
+        currentTime = Instant.now();
         currentTime = currentTime.plusSeconds(30);
         cp.setNotBefore(currentTime);
         AudienceRestrictionBean audienceRestriction = new AudienceRestrictionBean();
@@ -1003,7 +1004,7 @@ public class SAMLResponseTest {
         SubjectConfirmationDataBean subjectConfirmationData = new SubjectConfirmationDataBean();
         subjectConfirmationData.setAddress(TEST_CLIENT_ADDRESS);
         subjectConfirmationData.setInResponseTo(requestId);
-        subjectConfirmationData.setNotAfter(new DateTime().plusMinutes(5));
+        subjectConfirmationData.setNotAfter(Instant.now().plusSeconds(300));
         subjectConfirmationData.setRecipient(TEST_REQUEST_URL);
         callbackHandler.setSubjectConfirmationData(subjectConfirmationData);
 
@@ -1172,7 +1173,7 @@ public class SAMLResponseTest {
         SubjectConfirmationDataBean subjectConfirmationData = new SubjectConfirmationDataBean();
         subjectConfirmationData.setAddress(TEST_CLIENT_ADDRESS);
         subjectConfirmationData.setInResponseTo(requestId);
-        subjectConfirmationData.setNotAfter(new DateTime().plusMinutes(5));
+        subjectConfirmationData.setNotAfter(Instant.now().plusSeconds(300));
         subjectConfirmationData.setRecipient(TEST_REQUEST_URL);
         callbackHandler.setSubjectConfirmationData(subjectConfirmationData);
 
@@ -1633,7 +1634,7 @@ public class SAMLResponseTest {
         SubjectConfirmationDataBean subjectConfirmationData = new SubjectConfirmationDataBean();
         subjectConfirmationData.setAddress(TEST_CLIENT_ADDRESS);
         subjectConfirmationData.setInResponseTo(requestId);
-        subjectConfirmationData.setNotAfter(new DateTime().plusMinutes(5));
+        subjectConfirmationData.setNotAfter(Instant.now().plusSeconds(300));
         subjectConfirmationData.setRecipient(TEST_REQUEST_URL);
         saml2CallbackHandler.setSubjectConfirmationData(subjectConfirmationData);
 
@@ -1696,7 +1697,7 @@ public class SAMLResponseTest {
         SubjectConfirmationDataBean subjectConfirmationData = new SubjectConfirmationDataBean();
         subjectConfirmationData.setAddress(TEST_CLIENT_ADDRESS);
         subjectConfirmationData.setInResponseTo(requestId);
-        subjectConfirmationData.setNotAfter(new DateTime().plusMinutes(5));
+        subjectConfirmationData.setNotAfter(Instant.now().plusSeconds(300));
         subjectConfirmationData.setRecipient(TEST_REQUEST_URL);
         saml2CallbackHandler.setSubjectConfirmationData(subjectConfirmationData);
 

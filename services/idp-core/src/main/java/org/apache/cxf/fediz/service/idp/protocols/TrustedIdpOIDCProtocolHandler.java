@@ -27,12 +27,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.Response;
-
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 
+import jakarta.ws.rs.core.Form;
+import jakarta.ws.rs.core.Response;
 import org.apache.cxf.fediz.core.exception.ProcessingException;
 import org.apache.cxf.fediz.core.util.CertsUtils;
 import org.apache.cxf.fediz.core.util.DOMUtils;
@@ -213,7 +212,7 @@ public class TrustedIdpOIDCProtocolHandler extends AbstractTrustedIdpOAuth2Proto
 
                 // Convert into a SAML Token
                 SamlAssertionWrapper assertion =
-                    createSamlAssertion(idp, trustedIdp, jwt.getClaims(), (String)jwt.getClaim(subjectName), 
+                    createSamlAssertion(idp, trustedIdp, jwt.getClaims(), (String)jwt.getClaim(subjectName),
                                         notBefore, expires);
                 Document doc = DOMUtils.createDocument();
                 Element token = assertion.toDOM(doc);

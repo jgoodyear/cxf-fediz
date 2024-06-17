@@ -35,19 +35,18 @@ import java.util.SortedSet;
 import java.util.TreeSet;
 import java.util.logging.Logger;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.ws.rs.Consumes;
-import javax.ws.rs.FormParam;
-import javax.ws.rs.GET;
-import javax.ws.rs.POST;
-import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
-import javax.ws.rs.Produces;
-import javax.ws.rs.core.Context;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
-import javax.ws.rs.core.SecurityContext;
-
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.ws.rs.Consumes;
+import jakarta.ws.rs.FormParam;
+import jakarta.ws.rs.GET;
+import jakarta.ws.rs.POST;
+import jakarta.ws.rs.Path;
+import jakarta.ws.rs.PathParam;
+import jakarta.ws.rs.Produces;
+import jakarta.ws.rs.core.Context;
+import jakarta.ws.rs.core.MediaType;
+import jakarta.ws.rs.core.Response;
+import jakarta.ws.rs.core.SecurityContext;
 import org.apache.commons.text.StringEscapeUtils;
 import org.apache.commons.validator.routines.DomainValidator;
 import org.apache.commons.validator.routines.DomainValidator.ArrayType;
@@ -142,7 +141,7 @@ public class ClientRegistrationService {
         // CSRF
         checkCSRFToken(csrfToken);
         checkSecurityContext();
-        
+
         Collection<Client> clients = getClientRegistrations();
         for (Iterator<Client> it = clients.iterator(); it.hasNext();) {
             Client c = it.next();
@@ -203,7 +202,7 @@ public class ClientRegistrationService {
     public ClientTokens revokeClientAccessToken(@PathParam("id") String clientId,
                                                       @PathParam("tokenId") String tokenId,
                                                       @FormParam("client_csrfToken") String csrfToken) {
-        
+
         return doRevokeClientToken(clientId, csrfToken, tokenId, OAuthConstants.ACCESS_TOKEN);
     }
 
@@ -447,10 +446,10 @@ public class ClientRegistrationService {
     private void checkSecurityContext() {
         SecurityContext sc = mc.getSecurityContext();
         if (sc == null || sc.getUserPrincipal() == null) {
-            throw ExceptionUtils.toNotAuthorizedException(null,  null); 
+            throw ExceptionUtils.toNotAuthorizedException(null,  null);
         }
         if (userRole != null && !sc.isUserInRole(userRole)) {
-            throw ExceptionUtils.toForbiddenException(null,  null); 
+            throw ExceptionUtils.toForbiddenException(null,  null);
         }
     }
     private void checkCSRFToken(String csrfToken) {

@@ -22,7 +22,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import org.apache.cxf.fediz.core.FederationConstants;
 import org.apache.cxf.fediz.spring.FederationConfig;
-import org.springframework.beans.factory.annotation.Required;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.web.authentication.logout.LogoutFilter;
 import org.springframework.security.web.authentication.logout.LogoutHandler;
 import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
@@ -37,7 +37,7 @@ public class FederationLogoutFilter extends LogoutFilter {
         super(logoutSuccessHandler, handlers);
     }
 
-    @Required
+    @Autowired
     public void setFederationConfig(FederationConfig federationConfig) {
         this.federationConfig = federationConfig;
     }

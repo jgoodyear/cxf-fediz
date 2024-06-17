@@ -25,6 +25,7 @@ import java.math.BigInteger;
 import java.net.URI;
 import java.net.URL;
 import java.security.cert.X509Certificate;
+import java.time.Instant;
 import java.util.Collections;
 import java.util.List;
 
@@ -711,7 +712,7 @@ public class FederationResponseTest {
         Assertions.assertEquals(2, wfRes.getRoles().size());
         assertClaims(wfRes.getClaims(), callbackHandler.getRoleAttributeName());
     }
-    
+
     @org.junit.jupiter.api.Test
     public void validateSAML2TokenEmptyRole() throws Exception {
         SAML2CallbackHandler callbackHandler = new SAML2CallbackHandler();
@@ -748,7 +749,7 @@ public class FederationResponseTest {
         Assertions.assertEquals(1, wfRes.getRoles().size());
         Assertions.assertEquals("", wfRes.getRoles().get(0));
     }
-    
+
     @org.junit.jupiter.api.Test
     public void validateSAML2TokenNoRoleValue() throws Exception {
         SAML2CallbackHandler callbackHandler = new SAML2CallbackHandler();
@@ -1224,10 +1225,10 @@ public class FederationResponseTest {
         callbackHandler.setIssuer(TEST_RSTR_ISSUER);
         callbackHandler.setSubjectName(TEST_USER);
         ConditionsBean cp = new ConditionsBean();
-        DateTime currentTime = new DateTime();
+        Instant currentTime = Instant.now();
         currentTime = currentTime.minusSeconds(60);
         cp.setNotAfter(currentTime);
-        currentTime = new DateTime();
+        currentTime = Instant.now();
         currentTime = currentTime.minusSeconds(300);
         cp.setNotBefore(currentTime);
         AudienceRestrictionBean audienceRestriction = new AudienceRestrictionBean();
@@ -1271,10 +1272,10 @@ public class FederationResponseTest {
         callbackHandler.setIssuer(TEST_RSTR_ISSUER);
         callbackHandler.setSubjectName(TEST_USER);
         ConditionsBean cp = new ConditionsBean();
-        DateTime currentTime = new DateTime();
+        Instant currentTime = Instant.now();
         currentTime = currentTime.plusSeconds(300);
         cp.setNotAfter(currentTime);
-        currentTime = new DateTime();
+        currentTime = Instant.now();
         currentTime = currentTime.plusSeconds(30);
         cp.setNotBefore(currentTime);
         AudienceRestrictionBean audienceRestriction = new AudienceRestrictionBean();

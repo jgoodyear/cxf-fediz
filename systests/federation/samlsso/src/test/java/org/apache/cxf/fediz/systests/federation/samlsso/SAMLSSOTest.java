@@ -25,8 +25,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ArrayList;
 
-import javax.servlet.ServletException;
-
 import com.gargoylesoftware.htmlunit.CookieManager;
 import com.gargoylesoftware.htmlunit.HttpMethod;
 import com.gargoylesoftware.htmlunit.WebClient;
@@ -37,6 +35,7 @@ import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
 import com.gargoylesoftware.htmlunit.util.NameValuePair;
 import com.gargoylesoftware.htmlunit.xml.XmlPage;
 
+import jakarta.servlet.ServletException;
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;

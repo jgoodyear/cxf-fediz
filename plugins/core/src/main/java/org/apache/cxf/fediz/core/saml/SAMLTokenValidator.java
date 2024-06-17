@@ -64,7 +64,6 @@ import org.apache.wss4j.dom.engine.WSSConfig;
 import org.apache.wss4j.dom.handler.RequestData;
 import org.apache.wss4j.dom.saml.WSSSAMLKeyInfoProcessor;
 import org.apache.wss4j.dom.validate.Credential;
-import org.joda.time.DateTime;
 import org.opensaml.core.xml.XMLObject;
 import org.opensaml.saml.common.SAMLVersion;
 import org.opensaml.xmlsec.signature.KeyInfo;
@@ -89,8 +88,8 @@ public class SAMLTokenValidator implements TokenValidator {
         String ns = token.getNamespaceURI();
         return WSConstants.SAML2_NS.equals(ns) || WSConstants.SAML_NS.equals(ns);
     }
-    
-    private SAMLKeyInfo validateInCertificatesStore(SamlAssertionWrapper assertion, FedizContext config) 
+
+    private SAMLKeyInfo validateInCertificatesStore(SamlAssertionWrapper assertion, FedizContext config)
             throws WSSecurityException {
         //Iterate through all trust certificates
         for (TrustManager trustManager : config.getCertificateStores()) {
@@ -107,7 +106,7 @@ public class SAMLTokenValidator implements TokenValidator {
                         Enumeration<String> allAliases = keystore.aliases();
                         while (allAliases.hasMoreElements()) {
                             String keyAlias = allAliases.nextElement();
-                            
+
                             SAMLKeyInfo samlKeyInfo = new SAMLKeyInfo(new X509Certificate[] {
                                 CertsUtils.getX509CertificateFromCrypto(trustManager.getCrypto(), keyAlias)
                             });
@@ -116,17 +115,17 @@ public class SAMLTokenValidator implements TokenValidator {
                                 return samlKeyInfo;
                             } catch (WSSecurityException e) {
                                 if (LOG.isDebugEnabled()) {
-                                    LOG.debug("Attempt to validate signature with {} key in trust manager keystore", 
-                                            keyAlias, e);  
+                                    LOG.debug("Attempt to validate signature with {} key in trust manager keystore",
+                                            keyAlias, e);
                                 }
                             }
                         }
                     }
                 }
- 
+
             } catch (Exception e) {
                 LOG.debug("Signature validation failed", e);
-            }      
+            }
         }
         throw new WSSecurityException(
                 WSSecurityException.ErrorCode.FAILURE, "invalidSAMLsecurity",
@@ -177,8 +176,7 @@ public class SAMLTokenValidator implements TokenValidator {
 
                 // Parse the subject if it exists
                 assertion.parseSubject(
-                    new WSSSAMLKeyInfoProcessor(requestData), requestData.getSigVerCrypto(),
-                    requestData.getCallbackHandler()
+                    new WSSSAMLKeyInfoProcessor(requestData), requestData.getSigVerCrypto()
                 );
 
                 // Now verify trust on the signature
@@ -189,7 +187,7 @@ public class SAMLTokenValidator implements TokenValidator {
 
                 SamlAssertionValidator trustValidator = new SamlAssertionValidator();
                 trustValidator.setFutureTTL(config.getMaximumClockSkew().intValue());
-           
+
                 List<TrustedIssuer> trustedIssuers = config.getTrustedIssuers();
                 for (TrustedIssuer ti : trustedIssuers) {
                     Pattern subjectConstraint = ti.getCompiledSubject();
@@ -197,7 +195,7 @@ public class SAMLTokenValidator implements TokenValidator {
                     if (subjectConstraint != null) {
                         subjectConstraints.add(subjectConstraint);
                     }
-                
+
                     if (ti.getCertificateValidationMethod().equals(CertificateValidationMethod.CHAIN_TRUST)) {
                         trustValidator.setSubjectConstraints(subjectConstraints);
                         trustValidator.setSignatureTrustType(TrustType.CHAIN_TRUST_CONSTRAINTS);
@@ -222,7 +220,7 @@ public class SAMLTokenValidator implements TokenValidator {
                         if (trusted) {
                             break;
                         }
-                
+
                     } catch (Exception ex) {
                         if (LOG.isInfoEnabled()) {
                             LOG.info("Issuer '" + assertionIssuer + "' doesn't match trusted issuer '" + ti.getName()
@@ -263,7 +261,7 @@ public class SAMLTokenValidator implements TokenValidator {
             }
 
             claims = parseRoleClaim(config, claims);
-            
+
             SAMLTokenPrincipal p = new SAMLTokenPrincipalImpl(assertion);
 
             TokenValidatorResponse response = new TokenValidatorResponse(
@@ -371,7 +369,7 @@ public class SAMLTokenValidator implements TokenValidator {
         collection.addAll(claimsMap.values());
         return collection;
     }
-    
+
     private URI parseAttributeName(String attributeName) {
         try {
             return URI.create(attributeName);
@@ -503,7 +501,7 @@ public class SAMLTokenValidator implements TokenValidator {
 
 
     private Instant getExpires(SamlAssertionWrapper assertion) {
-        final DateTime validTill;
+        final Instant validTill;
         if (assertion.getSamlVersion().equals(SAMLVersion.VERSION_20)) {
             validTill = assertion.getSaml2().getConditions().getNotOnOrAfter();
         } else {
@@ -513,11 +511,11 @@ public class SAMLTokenValidator implements TokenValidator {
         if (validTill == null) {
             return null;
         }
-        return validTill.toDate().toInstant();
+        return validTill;
     }
 
     private Instant getCreated(SamlAssertionWrapper assertion) {
-        final DateTime validFrom;
+        final Instant validFrom;
         if (assertion.getSamlVersion().equals(SAMLVersion.VERSION_20)) {
             validFrom = assertion.getSaml2().getConditions().getNotBefore();
         } else {
@@ -527,15 +525,15 @@ public class SAMLTokenValidator implements TokenValidator {
         if (validFrom == null) {
             return null;
         }
-        return validFrom.toDate().toInstant();
+        return validFrom;
     }
 
     /**
      * Check the Conditions of the Assertion.
      */
     protected boolean isConditionValid(SamlAssertionWrapper assertion, int maxClockSkew) throws WSSecurityException {
-        DateTime validFrom = null;
-        DateTime validTill = null;
+        Instant validFrom = null;
+        Instant validTill = null;
         if (assertion.getSamlVersion().equals(SAMLVersion.VERSION_20)
             && assertion.getSaml2().getConditions() != null) {
             validFrom = assertion.getSaml2().getConditions().getNotBefore();
@@ -547,7 +545,7 @@ public class SAMLTokenValidator implements TokenValidator {
         }
 
         if (validFrom != null) {
-            DateTime currentTime = new DateTime();
+            Instant currentTime = Instant.now();
             currentTime = currentTime.plusSeconds(maxClockSkew);
             if (validFrom.isAfter(currentTime)) {
                 LOG.debug("SAML Token condition (Not Before) not met");
@@ -555,7 +553,7 @@ public class SAMLTokenValidator implements TokenValidator {
             }
         }
 
-        if (validTill != null && validTill.isBeforeNow()) {
+        if (validTill != null && validTill.isBefore(Instant.now())) {
             LOG.debug("SAML Token condition (Not On Or After) not met");
             return false;
         }

@@ -112,7 +112,7 @@ public abstract class AbstractTrustedIdpOAuth2ProtocolHandler extends AbstractTr
         }
     }
 
-    protected SamlAssertionWrapper createSamlAssertion(Idp idp, TrustedIdp trustedIdp, JsonMapObject claims, 
+    protected SamlAssertionWrapper createSamlAssertion(Idp idp, TrustedIdp trustedIdp, JsonMapObject claims,
                                                      String subjectName,
                                                      Instant notBefore,
                                                      Instant expires) throws Exception {
@@ -132,12 +132,12 @@ public abstract class AbstractTrustedIdpOAuth2ProtocolHandler extends AbstractTr
 
         // Conditions
         ConditionsBean conditionsBean = new ConditionsBean();
-        conditionsBean.setNotAfter(new DateTime(Date.from(expires)));
+        conditionsBean.setNotAfter(Instant.ofEpochMilli((new DateTime(Date.from(expires))).getMillis()));
         if (notBefore != null) {
             DateTime notBeforeDT = new DateTime(Date.from(notBefore));
-            conditionsBean.setNotBefore(notBeforeDT);
+            conditionsBean.setNotBefore(Instant.ofEpochMilli(notBeforeDT.getMillis()));
         } else {
-            conditionsBean.setNotBefore(new DateTime());
+            conditionsBean.setNotBefore(Instant.now());
         }
         callbackHandler.setConditionsBean(conditionsBean);
 
