@@ -22,8 +22,8 @@ package org.apache.cxf.fediz.examples.service;
 import java.security.Principal;
 
 import javax.annotation.Resource;
-import javax.xml.ws.WebServiceContext;
 
+import jakarta.xml.ws.WebServiceContext;
 import org.apache.hello_world_soap_http.Greeter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
