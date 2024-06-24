@@ -65,6 +65,7 @@ public class ITCrossRealmTest extends AbstractSTSTest {
         Properties testProps = readTestProperties(ITCrossRealmTest.class, "testRealmAtoRealmB");
 
         URL busFile = ITCrossRealmTest.class.getResource("sts-client.xml");
+        assert busFile != null;
         Bus bus = bf.createBus(busFile.toString());
         SpringBusFactory.setDefaultBus(bus);
         SpringBusFactory.setThreadDefaultBus(bus);

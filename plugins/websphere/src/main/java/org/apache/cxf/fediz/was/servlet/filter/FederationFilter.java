@@ -24,18 +24,18 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.security.auth.Subject;
-import javax.servlet.Filter;
-import javax.servlet.FilterChain;
-import javax.servlet.FilterConfig;
-import javax.servlet.ServletException;
-import javax.servlet.ServletRequest;
-import javax.servlet.ServletResponse;
-import javax.servlet.http.HttpServlet;
 
 import org.w3c.dom.Element;
 import com.ibm.websphere.security.WSSecurityException;
 import com.ibm.websphere.security.auth.WSSubject;
 
+import jakarta.servlet.Filter;
+import jakarta.servlet.FilterChain;
+import jakarta.servlet.FilterConfig;
+import jakarta.servlet.ServletException;
+import jakarta.servlet.ServletRequest;
+import jakarta.servlet.ServletResponse;
+import jakarta.servlet.http.HttpServlet;
 import org.apache.cxf.fediz.core.SecurityTokenThreadLocal;
 import org.apache.cxf.fediz.core.processor.FedizResponse;
 import org.apache.cxf.fediz.was.Constants;
@@ -59,7 +59,7 @@ public class FederationFilter extends HttpServlet implements Filter {
 
     /*
      * (non-Java-doc)
-     * @see javax.servlet.Filter#doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
+     * @see jakarta.servlet.Filter#doFilter(ServletRequest request, ServletResponse response, FilterChain chain)
      */
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException,

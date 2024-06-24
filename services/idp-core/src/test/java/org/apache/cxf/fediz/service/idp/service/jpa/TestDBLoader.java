@@ -18,9 +18,8 @@
  */
 package org.apache.cxf.fediz.service.idp.service.jpa;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
-
+import jakarta.persistence.EntityManager;
+import jakarta.persistence.PersistenceContext;
 import org.apache.cxf.fediz.service.idp.domain.FederationType;
 import org.apache.cxf.fediz.service.idp.domain.TrustType;
 import org.slf4j.Logger;
