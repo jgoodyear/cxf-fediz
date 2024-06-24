@@ -6,7 +6,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Locale"%>
 <%@ page import="java.util.TimeZone"%>
-<%@ page import="javax.servlet.http.HttpServletRequest" %>
+<%@ page import="jakarta.servlet.http.HttpServletRequest" %>
 <%@ page import="org.apache.cxf.fediz.service.oidc.CSRFUtils" %>
 <%@ page import="org.apache.cxf.fediz.service.oidc.clients.ClientTokens" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
@@ -17,10 +17,10 @@
     String basePath = request.getContextPath() + request.getServletPath();
     if (!basePath.endsWith("/")) {
         basePath += "/";
-    } 
+    }
     SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.US);
     dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-    
+
     // Get or generate the CSRF token
     String csrfToken = CSRFUtils.getCSRFToken(request, true);
 %>
@@ -51,16 +51,16 @@
           <th>Action</th>
        <%
           }
-       %>   
-          
-    </tr> 
+       %>
+
+    </tr>
     <%
        for (ServerAccessToken token : tokens.getAccessTokens()) {
     %>
        <tr>
            <td><%= token.getTokenKey() %></td>
            <td>
-           <% 
+           <%
                Date issuedDate = new Date(token.getIssuedAt() * 1000);
                String issued = dateFormat.format(issuedDate);
 		   %>
@@ -75,7 +75,7 @@
            <%
 		       } else {
 		   %>
-		   <td>Never</td>   
+		   <td>Never</td>
 		   <%
 		       }
 		   %>
@@ -89,7 +89,7 @@
 	           <%=    token.getRefreshToken() %>
 	          <%
 	            }
-	          %> 
+	          %>
 	         </td>
 	       <%
 	          }
@@ -97,20 +97,20 @@
            <td>
                <form action="<%=basePath%>console/clients/<%= client.getClientId() + "/at/" + token.getTokenKey() + "/revoke"%>" method="POST">
                    <input type="hidden" value="<%=csrfToken%>" name="client_csrfToken" />
-		           <input type="submit" value="Delete"/>  
+		           <input type="submit" value="Delete"/>
                </form>
            </td>
        </tr>
-    <%   
+    <%
        }
-    %> 
-    
+    %>
+
 </table>
 <br/>
 <h2>Refresh Tokens</h2>
 <br/>
 <table border="1">
-    <tr><th>ID</th><th>Issue Date</th><th>Expiry Date</th><th>Access Token</th> 
+    <tr><th>ID</th><th>Issue Date</th><th>Expiry Date</th><th>Access Token</th>
        <%
           if (!tokens.getRefreshTokens().isEmpty()) {
        %>
@@ -118,14 +118,14 @@
        <%
           }
        %>
-    </tr>   
+    </tr>
     <%
        for (RefreshToken token : tokens.getRefreshTokens()) {
     %>
        <tr>
            <td><%= token.getTokenKey() %></td>
            <td>
-           <% 
+           <%
                Date issuedDate = new Date(token.getIssuedAt() * 1000);
                String issued = dateFormat.format(issuedDate);
 		   %>
@@ -140,7 +140,7 @@
            <%
 		       } else {
 		   %>
-		   <td>Never</td>   
+		   <td>Never</td>
 		   <%
 		       }
 		   %>
@@ -152,8 +152,8 @@
 	       <%
 	          }
 	       %>
-           </td>    
-	       
+           </td>
+
            <td>
                <form action="<%=basePath%>console/clients/<%= client.getClientId() + "/rt/" + token.getTokenKey() + "/revoke"%>" method="POST">
                  <input type="hidden" value="<%=csrfToken%>" name="client_csrfToken" />
@@ -161,10 +161,10 @@
                </form>
            </td>
        </tr>
-    <%   
+    <%
        }
-    %> 
-    
+    %>
+
 </table>
 
 <br/>

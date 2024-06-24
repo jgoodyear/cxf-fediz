@@ -248,7 +248,7 @@ public class STSClientAction {
             HttpServletRequest servletRequest = WebUtils.getHttpServletRequest(context);
             if (servletRequest != null) {
                 X509Certificate[] certs = (X509Certificate[])servletRequest
-                    .getAttribute("javax.servlet.request.X509Certificate");
+                    .getAttribute("jakarta.servlet.request.X509Certificate");
                 if (certs != null && certs.length > 0) {
                     sts.setUseCertificateForConfirmationKeyInfo(true);
                     sts.setUseKeyCertificate(certs[0]);

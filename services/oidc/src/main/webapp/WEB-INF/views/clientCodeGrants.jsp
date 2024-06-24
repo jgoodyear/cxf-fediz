@@ -5,7 +5,7 @@
 <%@ page import="java.util.List"%>
 <%@ page import="java.util.Locale"%>
 <%@ page import="java.util.TimeZone"%>
-<%@ page import="javax.servlet.http.HttpServletRequest" %>
+<%@ page import="jakarta.servlet.http.HttpServletRequest" %>
 <%@ page import="org.apache.cxf.fediz.service.oidc.CSRFUtils" %>
 <%@ page import="org.apache.cxf.fediz.service.oidc.clients.ClientCodeGrants" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
@@ -17,7 +17,7 @@
     if (!basePath.endsWith("/")) {
         basePath += "/";
     }
-    
+
     // Get or generate the CSRF token
     String csrfToken = CSRFUtils.getCSRFToken(request, true);
 %>
@@ -31,17 +31,17 @@
 <h1>Code Grants issued to <%= StringEscapeUtils.escapeHtml4(client.getApplicationName()) + " (" + client.getClientId() + ")"%></h1>
 <br/>
 <table border="1">
-    <tr><th>ID</th><th>Issue Date</th><th>Expiry Date</th><th>Action</th></tr> 
+    <tr><th>ID</th><th>Issue Date</th><th>Expiry Date</th><th>Action</th></tr>
     <%
        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss", Locale.US);
        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
-               
+
        for (ServerAuthorizationCodeGrant token : tokens.getCodeGrants()) {
     %>
        <tr>
            <td><%= token.getCode() %></td>
            <td>
-           <% 
+           <%
                Date issuedDate = new Date(token.getIssuedAt() * 1000);
                String issued = dateFormat.format(issuedDate);
 		   %>
@@ -56,7 +56,7 @@
            <%
 		       } else {
 		   %>
-		   <td>Never</td>   
+		   <td>Never</td>
 		   <%
 		       }
 		   %>
@@ -67,10 +67,10 @@
                </form>
            </td>
        </tr>
-    <%   
+    <%
        }
-    %> 
-    
+    %>
+
 </table>
 
 <br/>

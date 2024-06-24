@@ -24,9 +24,9 @@
 <!-- ============================================================= -->
 <!-- SSL ContextFactory configuration                              -->
 <!-- ============================================================= -->
-<Configure id="sslContextFactory" class="org.eclipse.jetty.util.ssl.SslContextFactory">
+<Configure id="sslContextFactory" class="org.eclipse.jetty.util.ssl.SslContextFactory$Server">
   <Set name="KeyStorePath">
-      <Property name="jetty.base" default="${project.build.directory}" />
+      <Property name="jetty.base" default="${project.build.directory}"/>
       <Property name="jetty.sslContext.keyStorePath" default="/test-classes/jetty-ssl.keystore"/>
   </Set>
   <Set name="KeyStorePassword">

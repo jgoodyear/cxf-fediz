@@ -4,7 +4,7 @@
 <%@ page import="java.util.Date"%>
 <%@ page import="java.util.Locale"%>
 <%@ page import="java.util.TimeZone"%>
-<%@ page import="javax.servlet.http.HttpServletRequest" %>
+<%@ page import="jakarta.servlet.http.HttpServletRequest" %>
 <%@ page import="org.apache.cxf.fediz.service.oidc.clients.RegisteredClients" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 
@@ -13,7 +13,7 @@
     String basePath = request.getContextPath() + request.getServletPath();
     if (!basePath.endsWith("/")) {
         basePath += "/";
-    } 
+    }
 %>
 <html xmlns="http://www.w3.org/1999/xhtml">
 <head>
@@ -25,7 +25,7 @@
 <h1>Registered Clients</h1>
 <br/>
 <table id="registered_clients">
-    <tr><th>Name</th><th>ID</th><th>Creation Date</th><th>Redirect URI</th></tr> 
+    <tr><th>Name</th><th>ID</th><th>Creation Date</th><th>Redirect URI</th></tr>
     <%
        SimpleDateFormat dateFormat = new SimpleDateFormat("dd MMM yyyy", Locale.US);
        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
@@ -33,13 +33,13 @@
        for (Client client : regs) {
     %>
        <tr>
-           <td><a href="<%= basePath + "console/clients/" + client.getClientId() %>"><%= 
+           <td><a href="<%= basePath + "console/clients/" + client.getClientId() %>"><%=
                StringEscapeUtils.escapeHtml4(client.getApplicationName()) %></a></td>
            <td>
               <%= client.getClientId() %>
            </td>
            <td>
-           <% 
+           <%
                Date date = new Date(client.getRegisteredAt() * 1000);
                String created = dateFormat.format(date);
 		   %>
@@ -54,10 +54,10 @@
               } %>
            </td>
        </tr>
-    <%   
+    <%
        }
-    %> 
-    
+    %>
+
 </table>
 
 <br/>

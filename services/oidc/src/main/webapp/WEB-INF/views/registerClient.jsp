@@ -1,5 +1,5 @@
 <%@ page
-	import="javax.servlet.http.HttpServletRequest, java.util.Map, org.apache.cxf.fediz.service.oidc.clients.RegisterClient,
+	import="jakarta.servlet.http.HttpServletRequest, java.util.Map, org.apache.cxf.fediz.service.oidc.clients.RegisterClient,
 	org.apache.cxf.fediz.service.oidc.CSRFUtils"
 %>
 <%

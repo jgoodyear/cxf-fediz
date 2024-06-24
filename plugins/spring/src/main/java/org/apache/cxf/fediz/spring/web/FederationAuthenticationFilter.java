@@ -75,7 +75,7 @@ public class FederationAuthenticationFilter extends AbstractAuthenticationProces
         wfReq.setRequestState(savedRequestState);
 
         X509Certificate[] certs =
-            (X509Certificate[])request.getAttribute("javax.servlet.request.X509Certificate");
+            (X509Certificate[])request.getAttribute("jakarta.servlet.request.X509Certificate");
         wfReq.setCerts(certs);
 
         final UsernamePasswordAuthenticationToken authRequest = new UsernamePasswordAuthenticationToken(null, wfReq);

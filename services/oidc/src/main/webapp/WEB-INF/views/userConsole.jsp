@@ -1,5 +1,5 @@
 <%@ page
-	import="javax.servlet.http.HttpServletRequest,java.util.Map,java.util.Iterator,org.apache.cxf.fediz.service.oidc.console.UserConsole"%>
+	import="jakarta.servlet.http.HttpServletRequest,java.util.Map,java.util.Iterator,org.apache.cxf.fediz.service.oidc.console.UserConsole"%>
 <%
     UserConsole account = (UserConsole)request.getAttribute("data");
     String basePath = request.getContextPath() + request.getServletPath();

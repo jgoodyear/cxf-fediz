@@ -203,6 +203,7 @@
                     <dname>cn=localhost</dname>
                     <keypass>jettypw</keypass>
                     <storepass>jettypw</storepass>
+                    <storetype>PKCS12</storetype>
                     <alias>jetty</alias>
                     <keyalg>RSA</keyalg>
                 </configuration>
@@ -261,10 +262,7 @@
                         <contextPath>/fediz-idp-sts</contextPath>
                     </webApp>
                     <jettyXmls>
-                        ${project.build.directory}/test-classes/jetty.xml,
-                        ${project.build.directory}/test-classes/jetty-ssl-context.xml,
-                        ${project.build.directory}/test-classes/jetty-ssl.xml,
-                        ${project.build.directory}/test-classes/jetty-https.xml
+                        ${project.build.directory}/test-classes/jetty.xml,${project.build.directory}/test-classes/jetty-ssl-context.xml,${project.build.directory}/test-classes/jetty-ssl.xml,${project.build.directory}/test-classes/jetty-https.xml
                     </jettyXmls>
                     <stopPort>${jetty.port}</stopPort>
                     <stopKey>STOP</stopKey>

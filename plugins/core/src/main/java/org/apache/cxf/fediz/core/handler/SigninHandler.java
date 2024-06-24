@@ -117,7 +117,7 @@ public class SigninHandler<T> implements RequestHandler<T> {
             }
         }
         federationRequest.setRequest(req);
-        federationRequest.setCerts((X509Certificate[])req.getAttribute("javax.servlet.request.X509Certificate"));
+        federationRequest.setCerts((X509Certificate[])req.getAttribute("jakarta.servlet.request.X509Certificate"));
 
         FedizProcessor processor = FedizProcessorFactory.newFedizProcessor(fedizContext.getProtocol());
         return processor.processRequest(federationRequest, fedizContext);

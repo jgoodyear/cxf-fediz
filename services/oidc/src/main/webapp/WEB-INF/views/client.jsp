@@ -3,7 +3,7 @@
 <%@ page import="java.util.Date"%>
 <%@ page import="java.util.Locale"%>
 <%@ page import="java.util.TimeZone"%>
-<%@ page import="javax.servlet.http.HttpServletRequest" %>
+<%@ page import="jakarta.servlet.http.HttpServletRequest" %>
 <%@ page import="org.apache.cxf.fediz.service.oidc.CSRFUtils" %>
 <%@ page import="org.apache.commons.text.StringEscapeUtils" %>
 
@@ -13,7 +13,7 @@
     if (!basePath.endsWith("/")) {
         basePath += "/";
     }
-    
+
     // Get or generate the CSRF token
     String token = CSRFUtils.getCSRFToken(request, true);
 %>
@@ -31,14 +31,14 @@
        SimpleDateFormat dateFormat = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm", Locale.US);
        dateFormat.setTimeZone(TimeZone.getTimeZone("GMT"));
     %>
-    <tr><th>ID</th><th>Type</th><th>Secret</th><th>Creation Date</th></tr> 
+    <tr><th>ID</th><th>Type</th><th>Secret</th><th>Creation Date</th></tr>
        <tr>
            <td>
                <%= client.getClientId() %>
            </td>
            <td>
                <%= client.isConfidential() ? "Confidential" : "Public" %>
-           </td> 
+           </td>
            <td>
            <%
               if (client.getClientSecret() != null) {
@@ -49,20 +49,20 @@
            %>
               <i>Unavailable</i>
            <%
-              } 
+              }
            %>
            </td>
            <td>
-           <% 
+           <%
                Date date = new Date(client.getRegisteredAt() * 1000);
                String created = dateFormat.format(date);
 		   %>
            <%=    created %>
-           
+
            </td>
-           
+
        </tr>
-     
+
 </table>
 <br/>
 <h2>Restrictions:</h2>
@@ -77,7 +77,7 @@
     if (homeRealmAlias == null || homeRealmAlias.trim().isEmpty()) {
         homeRealmAlias = "Default - User selection at login";
     }
-%> 
+%>
     <%=  homeRealmAlias %>
 </td>
 </tr>
