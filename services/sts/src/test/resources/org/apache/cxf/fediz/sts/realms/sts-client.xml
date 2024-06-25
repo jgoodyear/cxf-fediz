@@ -41,7 +41,7 @@
       <http:tlsClientParameters disableCNCheck="true">
 
         <sec:keyManagers keyPassword="jettypw">
-          <sec:keyStore resource="jetty-ssl.keystore" password="storepass" type="JKS"/>
+          <sec:keyStore resource="jetty-ssl.keystore" password="jettypw" type="JKS"/>
         </sec:keyManagers>
 
         <sec:trustManagers>

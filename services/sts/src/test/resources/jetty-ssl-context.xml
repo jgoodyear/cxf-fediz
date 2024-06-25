@@ -84,7 +84,9 @@
 <Call name="addBean">
     <Arg>
         <New id="sslContextFactory" class="org.eclipse.jetty.util.ssl.SslContextFactory$Server">
-            <Set name="Provider" property="jetty.sslContext.provider" />
+            <Set name="Provider">
+                <Property name="jetty.sslContext.provider"/>
+            </Set>
             <Set name="KeyStorePath">
                 <Call name="resolvePath" class="org.eclipse.jetty.xml.XmlConfiguration">
                     <Arg><Property name="jetty.base" default="${project.build.directory}"/></Arg>
@@ -92,8 +94,12 @@
                 </Call>
             </Set>
             <Set name="KeyStorePassword"><Property name="jetty.sslContext.keyStorePassword" default="jettypw"/></Set>
-            <Set name="KeyStoreType" property="jetty.sslContext.keyStoreType" />
-            <Set name="KeyStoreProvider" property="jetty.sslContext.keyStoreProvider" />
+            <Set name="KeyStoreType">
+                <Property name="jetty.sslContext.keyStoreType" default="JKS"/>
+            </Set>
+            <Set name="KeyStoreProvider">
+                <Property name="jetty.sslContext.keyStoreProvider"/>
+            </Set>
             <Set name="KeyManagerPassword"><Property name="jetty.sslContext.keyManagerPassword" default="jettypw"/></Set>
             <Set name="TrustStorePath">
                 <Call name="resolvePath" class="org.eclipse.jetty.xml.XmlConfiguration">
@@ -101,18 +107,47 @@
                     <Arg><Property name="jetty.sslContext.trustStorePath" deprecated="jetty.sslContext.trustStoreAbsolutePath,jetty.truststore" default="${project.build.directory}/test-classes/jetty-ssl.keystore"/></Arg>
                 </Call>
             </Set>
-            <Set name="TrustStorePassword" property="jetty.sslContext.trustStorePassword"/>
-            <Set name="TrustStoreType" property="jetty.sslContext.trustStoreType" />
-            <Set name="TrustStoreProvider" property="jetty.sslContext.trustStoreProvider" />
-            <Set name="EndpointIdentificationAlgorithm" property="jetty.sslContext.endpointIdentificationAlgorithm" />
-            <Set name="NeedClientAuth" property="jetty.sslContext.needClientAuth" />
-            <Set name="WantClientAuth" property="jetty.sslContext.wantClientAuth" />
-            <Set name="useCipherSuitesOrder" property="jetty.sslContext.useCipherSuitesOrder" />
+            <Set name="TrustStorePassword">
+                <Property name="jetty.sslContext.trustStorePassword" default="jettypw"/>
+            </Set>
+            <Set name="TrustStoreType">
+                <Property name="jetty.sslContext.trustStoreType"/>
+            </Set>
+            <Set name="TrustStoreProvider">
+                <Property name="jetty.sslContext.trustStoreProvider"/>
+            </Set>
+            <Set name="EndpointIdentificationAlgorithm">
+                <Property name="jetty.sslContext.endpointIdentificationAlgorithm"/>
+            </Set>
+            <Set name="NeedClientAuth">
+                <Property name="jetty.sslContext.needClientAuth" default="false"/>
+            </Set>
+            <Set name="WantClientAuth">
+                <Property name="jetty.sslContext.wantClientAuth" default="true"/>
+            </Set>
+            <Set name="useCipherSuitesOrder">
+                <Property name="jetty.sslContext.useCipherSuitesOrder" default="true"/>
+            </Set>
             <Set name="sslSessionCacheSize" property="jetty.sslContext.sslSessionCacheSize" />
             <Set name="sslSessionTimeout" property="jetty.sslContext.sslSessionTimeout" />
             <Set name="RenegotiationAllowed" property="jetty.sslContext.renegotiationAllowed" />
             <Set name="RenegotiationLimit" property="jetty.sslContext.renegotiationLimit" />
             <Set name="SniRequired" property="jetty.sslContext.sniRequired" />
+
+            <Set name="ExcludeCipherSuites">
+                <Array type="String">
+                    <Item>SSL_RSA_WITH_DES_CBC_SHA</Item>
+                    <Item>SSL_DHE_RSA_WITH_DES_CBC_SHA</Item>
+                    <Item>SSL_DHE_DSS_WITH_DES_CBC_SHA</Item>
+                    <Item>SSL_RSA_EXPORT_WITH_RC4_40_MD5</Item>
+                    <Item>SSL_RSA_EXPORT_WITH_DES40_CBC_SHA</Item>
+                    <Item>SSL_DHE_RSA_EXPORT_WITH_DES40_CBC_SHA</Item>
+                    <Item>SSL_DHE_DSS_EXPORT_WITH_DES40_CBC_SHA</Item>
+                </Array>
+            </Set>
+            <Set name="useCipherSuitesOrder">
+                <Property name="jetty.sslContext.useCipherSuitesOrder" default="true"/>
+            </Set>
 
         </New>
     </Arg>
