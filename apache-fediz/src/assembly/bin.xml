@@ -131,7 +131,7 @@
                 <exclude>org.apache.cxf.fediz:fediz-idp</exclude>
                 <exclude>org.apache.cxf.fediz:fediz-idp-sts</exclude>
                 <exclude>org.apache.cxf.fediz:fediz-oidc</exclude>
-                <exclude>org.apache.cxf.fediz:fediz-jetty9</exclude>
+                <exclude>org.apache.cxf.fediz:fediz-jetty11</exclude>
                 <exclude>org.apache.cxf.fediz:fediz-cxf</exclude>
                 <exclude>org.apache.cxf.fediz:fediz-spring</exclude>
             </excludes>
@@ -160,7 +160,7 @@
                 <exclude>org.apache.cxf.fediz:fediz-idp-sts</exclude>
                 <exclude>org.apache.cxf.fediz:fediz-oidc</exclude>
                 <exclude>org.apache.cxf.fediz:fediz-tomcat</exclude>
-                <exclude>org.apache.cxf.fediz:fediz-jetty9</exclude>
+                <exclude>org.apache.cxf.fediz:fediz-jetty11</exclude>
                 <exclude>org.apache.cxf.fediz:fediz-cxf</exclude>
             </excludes>
             <scope>runtime</scope>
@@ -174,7 +174,7 @@
                 <exclude>org.apache.cxf.fediz:fediz-idp-sts</exclude>
                 <exclude>org.apache.cxf.fediz:fediz-oidc</exclude>
                 <exclude>org.apache.cxf.fediz:fediz-tomcat</exclude>
-                <exclude>org.apache.cxf.fediz:fediz-jetty9</exclude>
+                <exclude>org.apache.cxf.fediz:fediz-jetty11</exclude>
                 <exclude>org.apache.cxf.fediz:fediz-spring</exclude>
             </excludes>
             <scope>runtime</scope>
