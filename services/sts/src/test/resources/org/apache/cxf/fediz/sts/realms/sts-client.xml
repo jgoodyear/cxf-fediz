@@ -22,9 +22,13 @@
 	xmlns:cxf="http://cxf.apache.org/core"
 	xmlns:http="http://cxf.apache.org/transports/http/configuration"
 	xmlns:sec="http://cxf.apache.org/configuration/security"
-	xsi:schemaLocation="http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd
-		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
-		http://cxf.apache.org/transports/http/configuration http://cxf.apache.org/schemas/configuration/http-conf.xsd">
+	xsi:schemaLocation="
+	    http://cxf.apache.org/configuration/security
+	    http://cxf.apache.org/schemas/configuration/security.xsd
+	    http://cxf.apache.org/transports/http/configuration
+	    http://cxf.apache.org/schemas/configuration/http-conf.xsd
+		http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans.xsd">
 
     <!--cxf:bus>
         <cxf:features>
@@ -33,11 +37,19 @@
     </cxf:bus-->
 
    <http:conduit name="*.http-conduit">
+
       <http:tlsClientParameters disableCNCheck="true">
+
+        <sec:keyManagers keyPassword="jettypw">
+          <sec:keyStore resource="jetty-ssl.keystore" password="storepass" type="JKS"/>
+        </sec:keyManagers>
+
         <sec:trustManagers>
           <sec:keyStore type="jks" password="jettypw" resource="jetty-ssl.keystore"/>
         </sec:trustManagers>
+
       </http:tlsClientParameters>
+
    </http:conduit>
 
 </beans>

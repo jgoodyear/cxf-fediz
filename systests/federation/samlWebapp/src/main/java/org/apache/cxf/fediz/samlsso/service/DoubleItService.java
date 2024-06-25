@@ -18,8 +18,7 @@
  */
 package org.apache.cxf.fediz.samlsso.service;
 
-import javax.annotation.security.RolesAllowed;
-
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.Consumes;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.POST;

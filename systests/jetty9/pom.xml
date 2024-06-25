@@ -22,40 +22,40 @@
     <parent>
         <groupId>org.apache.cxf.fediz</groupId>
         <artifactId>fediz-systests</artifactId>
-        <version>1.6.3-SNAPSHOT</version>
+        <version>1.7.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>org.apache.cxf.fediz.systests</groupId>
-    <artifactId>fediz-systests-jetty9</artifactId>
-    <name>Apache Fediz Systests for Jetty 9</name>
+    <artifactId>fediz-systests-jetty11</artifactId>
+    <name>Apache Fediz Systests for Jetty 11</name>
     <packaging>jar</packaging>
     <dependencies>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-server</artifactId>
-            <version>${jetty9.version}</version>
+            <version>${jetty11.version}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-security</artifactId>
-            <version>${jetty9.version}</version>
+            <version>${jetty11.version}</version>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-xml</artifactId>
-            <version>${jetty9.version}</version>
+            <version>${jetty11.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-webapp</artifactId>
-            <version>${jetty9.version}</version>
+            <version>${jetty11.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
             <groupId>org.eclipse.jetty</groupId>
             <artifactId>jetty-annotations</artifactId>
-            <version>${jetty9.version}</version>
+            <version>${jetty11.version}</version>
             <scope>test</scope>
         </dependency>
         <dependency>
@@ -105,7 +105,7 @@
         </dependency>
          <dependency>
             <groupId>org.apache.cxf.fediz</groupId>
-            <artifactId>fediz-jetty9</artifactId>
+            <artifactId>fediz-jetty11</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>

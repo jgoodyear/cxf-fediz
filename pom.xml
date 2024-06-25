@@ -22,7 +22,7 @@
     <modelVersion>4.0.0</modelVersion>
     <groupId>org.apache.cxf.fediz</groupId>
     <artifactId>fediz</artifactId>
-    <version>1.6.3-SNAPSHOT</version>
+    <version>1.7.0-SNAPSHOT</version>
     <name>Apache Fediz</name>
     <packaging>pom</packaging>
 
@@ -53,8 +53,7 @@
         <jackson.version>2.17.1</jackson.version>
         <jaxb.runtime.version>4.0.5</jaxb.runtime.version>
         <jaxb.version>4.0.2</jaxb.version>
-        <jetty9.version>11.0.21</jetty9.version> <!-- old version 9.4.54.v20240208 -->
-        <jetty11.version>11.0.21</jetty11.version>
+        <jetty11.version>11.0.21</jetty11.version> <!-- old version 9.4.54.v20240208 -->
         <junit.version>5.10.2</junit.version>
         <kerby.version>2.0.3</kerby.version>
         <log4j.version>2.23.1</log4j.version>
@@ -102,7 +101,7 @@
         <fediz.downloadSources>true</fediz.downloadSources>
 
         <fediz.resources.base.path />
-        <project.build.outputTimestamp>1711012796</project.build.outputTimestamp>
+        <project.build.outputTimestamp>1719320420</project.build.outputTimestamp>
     </properties>
 
     <scm>

@@ -22,16 +22,19 @@
     <parent>
         <groupId>org.apache.cxf.fediz</groupId>
         <artifactId>fediz-systests</artifactId>
-        <version>1.7.0-SNAPSHOT</version>
+        <version>1.5.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>org.apache.cxf.fediz.systests</groupId>
-    <artifactId>fediz-systests-ldap</artifactId>
-    <name>Apache Fediz LDAP Systests</name>
+    <artifactId>fediz-systests-websphere</artifactId>
+    <name>Apache Fediz Systests websphere 8.5</name>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
+        <!-- Static port from external standalone Websphere RP -->
+        <rp.https.port>8443</rp.https.port>
+        <idp.https.port>9443</idp.https.port>
     </properties>
     <dependencies>
         <dependency>
@@ -45,7 +48,7 @@
             <artifactId>tomcat-embed-jasper</artifactId>
             <version>${tomcat.version}</version>
             <scope>test</scope>
-        </dependency>
+        </dependency>        
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -55,6 +58,12 @@
         <dependency>
             <groupId>org.apache.cxf.fediz</groupId>
             <artifactId>fediz-tomcat</artifactId>
+            <version>${project.version}</version>
+            <scope>test</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf.fediz</groupId>
+            <artifactId>fediz-websphere</artifactId>
             <version>${project.version}</version>
             <scope>test</scope>
         </dependency>
@@ -77,25 +86,6 @@
             <version>${hsqldb.version}</version>
             <scope>test</scope>
         </dependency>
-        <dependency>
-            <groupId>org.apache.directory.server</groupId>
-            <artifactId>apacheds-core-annotations</artifactId>
-            <version>${apacheds.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.directory.server</groupId>
-            <artifactId>apacheds-core-integ</artifactId>
-            <version>${apacheds.version}</version>
-            <scope>test</scope>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.directory.server</groupId>
-            <artifactId>apacheds-protocol-shared</artifactId>
-            <version>${apacheds.version}</version>
-            <scope>test</scope>
-        </dependency>
-
     </dependencies>
     <build>
         <testResources>
@@ -115,6 +105,20 @@
             </testResource>
         </testResources>
         <plugins>
+			<plugin>
+				<groupId>com.ibm.websphere.wlp.maven.plugins</groupId>
+				<artifactId>liberty-maven-plugin</artifactId>
+				<configuration>
+					<serverHome>${project.build.directory}/wlp</serverHome>  
+					<background>true</background>
+					<serverName>test</serverName>
+				</configuration>
+			</plugin>
+			<plugin>
+		        <groupId>org.apache.maven.plugins</groupId>
+		        <artifactId>maven-surefire-report-plugin</artifactId>
+		        <version>3.2.5</version><!--$NO-MVN-MAN-VER$-->
+		      </plugin>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
                 <artifactId>build-helper-maven-plugin</artifactId>
@@ -127,8 +131,8 @@
                         <phase>initialize</phase>
                         <configuration>
                             <portNames>
-                                <portName>idp.https.port</portName>
-                                <portName>rp.https.port</portName>
+                                <!-- <portName>idp.https.port</portName> -->
+                                <!-- <portName>rp.https.port</portName> -->
                             </portNames>
                         </configuration>
                     </execution>
@@ -162,6 +166,7 @@
                                     <overWrite>true</overWrite>
                                     <outputDirectory>target/tomcat/idp/webapps/fediz-idp-sts</outputDirectory>
                                 </artifactItem>
+                                <!-- 
                                 <artifactItem>
                                     <groupId>org.apache.cxf.fediz.systests.webapps</groupId>
                                     <artifactId>fediz-systests-webapps-simple</artifactId>
@@ -169,8 +174,8 @@
                                     <type>war</type>
                                     <overWrite>true</overWrite>
                                     <outputDirectory>target/tomcat/rp/webapps/simpleWebapp</outputDirectory>
-                                    <excludes>**/jakarta.xml.bind-api-*.jar</excludes>
                                 </artifactItem>
+                                 -->
                                 <artifactItem>
                                     <groupId>org.apache.cxf.fediz.systests</groupId>
                                     <artifactId>fediz-systests-tests</artifactId>
@@ -187,30 +192,6 @@
                             <overWriteIfNewer>true</overWriteIfNewer>
                             <stripVersion>true</stripVersion>
                         </configuration>
-                    </execution>
-                </executions>
-            </plugin>
-            <plugin>
-                <artifactId>maven-resources-plugin</artifactId>
-                <executions>
-                    <execution>
-                        <id>copy-entities-to-sts</id>
-                        <phase>generate-test-sources</phase>
-                        <goals>
-                            <goal>copy-resources</goal>
-                        </goals>
-                        <configuration>
-                            <outputDirectory>${basedir}/target/tomcat/idp/webapps/fediz-idp-sts/WEB-INF</outputDirectory>
-                            <resources>          
-                                <resource>
-                                    <directory>${basedir}/src/test/resources/sts</directory>
-                                    <includes>
-                                        <include>cxf-transport.xml</include>
-                                    </includes>
-                                    <filtering>true</filtering>
-                                </resource>
-                            </resources>              
-                        </configuration>            
                     </execution>
                 </executions>
             </plugin>
@@ -235,7 +216,8 @@
                             <includes>
                                 <include>**/systests/**</include>
                             </includes>
-                            <argLine>-Xms512m -Xmx1024m</argLine>
+                            <!-- <argLine>-Xms512m -Xmx1024m </argLine> -->
+                            <argLine>-Xms512m -Xmx1024m -Xdebug -Xrunjdwp:transport=dt_socket,address=8005,server=y,suspend=y</argLine>
                         </configuration>
                     </execution>
                     <execution>

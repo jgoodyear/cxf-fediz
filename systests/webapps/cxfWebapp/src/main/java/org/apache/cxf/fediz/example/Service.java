@@ -20,10 +20,9 @@ package org.apache.cxf.fediz.example;
 
 import java.security.Principal;
 
-import javax.annotation.security.RolesAllowed;
-
 import org.w3c.dom.Element;
 
+import jakarta.annotation.security.RolesAllowed;
 import jakarta.ws.rs.GET;
 import jakarta.ws.rs.Path;
 import jakarta.ws.rs.Produces;

@@ -7,9 +7,9 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License. You may obtain a copy of the License at
- 
+
   http://www.apache.org/licenses/LICENSE-2.0
- 
+
   Unless required by applicable law or agreed to in writing,
   software distributed under the License is distributed on an
   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -22,12 +22,12 @@
     <parent>
         <groupId>org.apache.cxf.fediz.systests</groupId>
         <artifactId>fediz-systests-federation</artifactId>
-        <version>1.6.3-SNAPSHOT</version>
+        <version>1.7.0-SNAPSHOT</version>
         <relativePath>../pom.xml</relativePath>
     </parent>
     <groupId>org.apache.cxf.fediz.systests.federation</groupId>
     <artifactId>fediz-systests-federation-samlsso</artifactId>
-    <name>Apache Fediz Federation Systests Tomcat 7 SAML SSO</name>
+    <name>Apache Fediz Federation Systests Tomcat 10 SAML SSO</name>
     <packaging>jar</packaging>
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
@@ -207,7 +207,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${basedir}/target/tomcat/idp/webapps/fediz-idp/WEB-INF/classes</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>${basedir}/src/test/resources/realma</directory>
                                     <includes>
@@ -215,8 +215,8 @@
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>
-                            </resources>              
-                        </configuration>            
+                            </resources>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>copy-entities-to-remote-idp</id>
@@ -226,7 +226,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${basedir}/target/tomcat/idprealmb/webapps/fediz-idp-realmb/WEB-INF/classes</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>${basedir}/src/test/resources/realmb</directory>
                                     <includes>
@@ -236,8 +236,8 @@
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>
-                            </resources>              
-                        </configuration>            
+                            </resources>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>copy-entities-to-remote-idp2</id>
@@ -247,7 +247,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${basedir}/target/tomcat/idprealmb/webapps/fediz-idp-realmb/WEB-INF</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>${basedir}/src/test/resources/realmb</directory>
                                     <includes>
@@ -256,8 +256,8 @@
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>
-                            </resources>              
-                        </configuration>            
+                            </resources>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>copy-entities-to-oidc-idp</id>
@@ -267,7 +267,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${basedir}/target/tomcat/idpoidc/webapps/idpoidc/WEB-INF</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>${basedir}/src/test/resources</directory>
                                     <includes>
@@ -275,8 +275,8 @@
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>
-                            </resources>              
-                        </configuration>            
+                            </resources>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>copy-entities-to-samlsso-webapp</id>
@@ -286,7 +286,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${basedir}/target/tomcat/rp/webapps/samlssoWebapp/WEB-INF</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>${basedir}/src/test/resources/rp</directory>
                                     <includes>
@@ -294,8 +294,8 @@
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>
-                            </resources>              
-                        </configuration>            
+                            </resources>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
