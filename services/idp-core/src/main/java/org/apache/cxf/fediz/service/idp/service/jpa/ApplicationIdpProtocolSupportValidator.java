@@ -20,9 +20,8 @@ package org.apache.cxf.fediz.service.idp.service.jpa;
 
 import java.util.List;
 
-import javax.validation.ConstraintValidator;
-import javax.validation.ConstraintValidatorContext;
-
+import jakarta.validation.ConstraintValidator;
+import jakarta.validation.ConstraintValidatorContext;
 import org.apache.cxf.fediz.service.idp.protocols.ProtocolController;
 import org.apache.cxf.fediz.service.idp.spi.ApplicationProtocolHandler;
 import org.springframework.beans.factory.annotation.Autowired;

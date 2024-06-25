@@ -18,8 +18,7 @@
  */
 package org.apache.cxf.fediz.service.idp.rest;
 
-import javax.validation.ConstraintViolationException;
-
+import jakarta.validation.ConstraintViolationException;
 import jakarta.ws.rs.core.HttpHeaders;
 import jakarta.ws.rs.core.Response;
 import jakarta.ws.rs.core.Response.ResponseBuilder;

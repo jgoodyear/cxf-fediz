@@ -21,8 +21,6 @@ package org.apache.cxf.fediz.service.idp.service.jpa;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.validation.constraints.NotNull;
-
 import jakarta.persistence.CollectionTable;
 import jakarta.persistence.Column;
 import jakarta.persistence.ElementCollection;
@@ -32,6 +30,7 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.MapKeyColumn;
+import jakarta.validation.constraints.NotNull;
 import org.apache.cxf.fediz.service.idp.domain.FederationType;
 import org.apache.cxf.fediz.service.idp.domain.TrustType;
 import org.apache.openjpa.persistence.jdbc.Index;

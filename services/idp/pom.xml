@@ -193,8 +193,9 @@
                     <skip>${skipTests}</skip>
                     <stopPort>${idp.stop.port}</stopPort>
                     <stopKey>STOP</stopKey>
-                    <jettyXmls>${project.build.directory}/test-classes/jetty.xml,${project.build.directory}/test-classes/jetty-ssl-context.xml,
-                    ${project.build.directory}/test-classes/jetty-ssl.xml,${project.build.directory}/test-classes/jetty-https.xml</jettyXmls>
+                    <jettyXmls>
+                        ${project.build.directory}/test-classes/jetty.xml,${project.build.directory}/test-classes/jetty-ssl-context.xml,${project.build.directory}/test-classes/jetty-ssl.xml,${project.build.directory}/test-classes/jetty-https.xml
+                    </jettyXmls>
                     <contextHandlers>
                         <contextHandler implementation="org.eclipse.jetty.maven.plugin.MavenWebAppContext">
                             <war>${project.build.directory}/fediz-idp-sts.war</war>
