@@ -7,9 +7,9 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License. You may obtain a copy of the License at
- 
+
   http://www.apache.org/licenses/LICENSE-2.0
- 
+
   Unless required by applicable law or agreed to in writing,
   software distributed under the License is distributed on an
   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -28,13 +28,13 @@
         http://cxf.apache.org/jaxrs
         http://cxf.apache.org/schemas/jaxrs.xsd">
 
-<!-- 
+<!--
     <context:component-scan base-package="org.apache.cxf.fediz.service.idp.protocols" />
-    
-    <bean class="org.apache.cxf.fediz.service.idp.protocols.TrustedIdpProtocolHandlerImpl" />  
+
+    <bean class="org.apache.cxf.fediz.service.idp.protocols.TrustedIdpProtocolHandlerImpl" />
     <context:property-placeholder location="classpath:realm.properties"/>
---> 
-    
+-->
+
     <bean id="jaxbProvider" class="org.apache.cxf.jaxrs.provider.JAXBElementProvider">
         <property name="depthProperties">
             <bean class="org.apache.cxf.staxutils.DocumentDepthProperties">
@@ -54,24 +54,7 @@
         class="org.apache.cxf.fediz.service.idp.rest.RestServiceExceptionMapper" />
 
     <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
-    
-    <!-- CXF Swagger2Feature -->
-    <bean id="swagger2Customizer" class="org.apache.cxf.jaxrs.swagger.Swagger2Customizer">
-        <property name="replaceTags" value="true" />
-    </bean> 
-    <bean id="swagger2Feature" class="org.apache.cxf.jaxrs.swagger.Swagger2Feature">
-        <property name="title" value="Apache Fediz IDP" />
-        <property name="version" value="${project.version}" />
-        <property name="description" value="Apache Fediz IDP ${project.version}" />
-        <property name="contact" value="dev@cxf.apache.org" />
 
-        <property name="resourcePackage" value="org.apache.cxf.fediz.service.idp.rest" />
-        <property name="scanAllResources" value="true" />
-
-        <property name="customizer" ref="swagger2Customizer" />
-        <property name="prettyPrint" value="true" />
-    </bean>
-    
     <jaxrs:server id="idpService" address="/rs">
         <jaxrs:serviceBeans>
             <ref bean="idpServiceImpl" />
@@ -87,9 +70,6 @@
             <ref bean="jsonProvider" />
             <ref bean="exceptionMapper" />
         </jaxrs:providers>
-        <jaxrs:features>
-            <ref bean="swagger2Feature" />
-        </jaxrs:features>
         <jaxrs:extensionMappings>
             <entry key="json" value="application/json;charset=UTF-8" />
             <entry key="xml" value="application/xml;charset=UTF-8" />
@@ -115,6 +95,6 @@
 
     <bean id="roleServiceImpl"
         class="org.apache.cxf.fediz.service.idp.rest.RoleServiceImpl" />
-    
+
 </beans>
 

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.cxf.fediz.systests.jetty9;
+package org.apache.cxf.fediz.systests.jetty11;
 
 import java.nio.file.Path;
 import java.nio.file.Paths;

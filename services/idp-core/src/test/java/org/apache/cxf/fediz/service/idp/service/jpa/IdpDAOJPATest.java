@@ -36,6 +36,7 @@ import org.apache.wss4j.dom.WSConstants;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -222,8 +223,18 @@ public class IdpDAOJPATest {
 
     @Test
     public void testTryAddExistingIdp() throws MalformedURLException {
-        Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+        Idp realmA = idpDAO.getIdp("urn:org:apache:cxf:fediz:idp:realm-A", null);
+        Assertions.assertThrows(InvalidDataAccessApiUsageException.class, () -> {
+            idpDAO.addIdp(realmA);
+        });
+    }
+
+    @Test
+    public void testTryAddExistingIdpWithSameId() throws MalformedURLException {
+        Idp realmA = idpDAO.getIdp("urn:org:apache:cxf:fediz:idp:realm-A", null);
+        Assertions.assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             Idp idp = createIdp("urn:org:apache:cxf:fediz:idp:realm-A");
+            idp.setId(realmA.getId());
             idpDAO.addIdp(idp);
         });
     }
@@ -565,77 +576,6 @@ public class IdpDAOJPATest {
 
         Assert.isTrue(1 == idp.getTrustedIdps().size(), "applications size doesn't match");
     }
-
-    /*
-    @Test(expected = DataIntegrityViolationException.class)
-    public void testTryAddExistingTrustedIdpToIdp() {
-        Idp idp = new Idp();
-        idp.setRealm("urn:org:apache:cxf:fediz:idp:realm-A");
-
-        TrustedIdp trustedIdp = new TrustedIdp();
-        trustedIdp.setRealm("urn:org:apache:cxf:fediz:idp:realm-B");
-
-        idpDAO.addTrustedIdpToIdp(idp, trustedIdp);
-    }
-
-    @Test(expected = NoResultException.class)
-    public void testTryAddUnknownTrustedIdpToIdp() {
-        Idp idp = new Idp();
-        idp.setRealm("urn:org:apache:cxf:fediz:idp:realm-A");
-
-        TrustedIdp trustedIdp = new TrustedIdp();
-        trustedIdp.setRealm("urn:org:apache:cxf:fediz:UNKNOWN");
-
-        idpDAO.addTrustedIdpToIdp(idp, trustedIdp);
-    }
-
-    @Test
-    public void testRemoveTrustedIdpFromIdp() {
-        String realm = "urn:org:apache:cxf:fediz:trustedidp:testremove";
-        //Prepare step
-        Idp idp = createIdp(realm);
-        idpDAO.addIdp(idp);
-
-        TrustedIdp trustedIdp = new TrustedIdp();
-        trustedIdp.setRealm("urn:org:apache:cxf:fediz:idp:realm-B");
-        idpDAO.addTrustedIdpToIdp(idp, trustedIdp);
-
-        idp = idpDAO.getIdp(realm, Arrays.asList("all"));
-        Assert.isTrue(1 == idp.getTrustedIdps().size(),
-                      "trustedIdps size doesn't match [" + idp.getTrustedIdps().size() + "]");
-
-        //Testcase
-        idpDAO.removeTrustedIdpFromIdp(idp, trustedIdp);
-        idp = idpDAO.getIdp(realm, Arrays.asList("all"));
-        Assert.isTrue(0 == idp.getTrustedIdps().size(),
-                      "trustedIdps size doesn't match [" + idp.getTrustedIdps().size() + "]");
-    }
-
-
-    @Test(expected = EntityNotFoundException.class)
-    public void testTryRemoveNotAssignedTrustedIdpFromIdp() {
-        Idp idp = new Idp();
-        idp.setRealm("urn:org:apache:cxf:fediz:idp:realm-A");
-
-        TrustedIdp trustedIdp = new TrustedIdp();
-        trustedIdp.setRealm("trustedidp2realm");
-
-        idpDAO.removeTrustedIdpFromIdp(idp, trustedIdp);
-    }
-
-
-    @Test(expected = NoResultException.class)
-    public void testTryRemoveUnknownTrustedIdpFromIdp() {
-        Idp idp = new Idp();
-        idp.setRealm("urn:org:apache:cxf:fediz:idp:realm-A");
-
-        TrustedIdp trustedIdp = new TrustedIdp();
-        trustedIdp.setRealm("urn:org:apache:cxf:fediz:UNKNOWN");
-
-        idpDAO.removeTrustedIdpFromIdp(idp, trustedIdp);
-    }
-    */
-
 
     private static Idp createIdp(String realm) throws MalformedURLException {
         Idp idp = new Idp();

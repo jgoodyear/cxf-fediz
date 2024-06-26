@@ -23,8 +23,8 @@ import java.util.List;
 import org.apache.cxf.fediz.service.idp.domain.Entitlement;
 import org.apache.cxf.fediz.service.idp.service.EntitlementDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.Assert;
@@ -87,10 +87,20 @@ public class EntitlementDAOJPATest {
 
     @Test
     public void testTryAddExistingEntitlement() {
-        Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+        Entitlement entitlement = entitlementDAO.getEntitlement("CLAIM_DELETE");
+        Assertions.assertThrows(InvalidDataAccessApiUsageException.class, () -> {
+            entitlementDAO.addEntitlement(entitlement);
+        });
+    }
+
+    @Test
+    public void testTryAddExistingEntitlementWithSameId() {
+        Entitlement entitlement = entitlementDAO.getEntitlement("CLAIM_DELETE");
+        Assertions.assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             Entitlement entitlement5 = new Entitlement();
             entitlement5.setName("CLAIM_DELETE");
             entitlement5.setDescription("Description for CLAIM_DELETE");
+            entitlement5.setId(entitlement.getId());
             entitlementDAO.addEntitlement(entitlement5);
         });
     }

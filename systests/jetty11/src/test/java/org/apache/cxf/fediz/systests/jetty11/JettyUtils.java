@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.cxf.fediz.systests.jetty9;
+package org.apache.cxf.fediz.systests.jetty11;
 
 import org.eclipse.jetty.server.Server;
 import org.eclipse.jetty.util.resource.Resource;

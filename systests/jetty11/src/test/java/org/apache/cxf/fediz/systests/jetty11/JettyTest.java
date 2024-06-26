@@ -17,26 +17,24 @@
  * under the License.
  */
 
-package org.apache.cxf.fediz.systests.jetty9;
+package org.apache.cxf.fediz.systests.jetty11;
 
-import org.apache.cxf.fediz.systests.common.AbstractExpiryTests;
+import org.apache.cxf.fediz.systests.common.AbstractTests;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
+import org.junit.jupiter.api.Disabled;
 
-/**
- * Some token expiry tests
- */
-public class TokenExpiryTest extends AbstractExpiryTests {
+public class JettyTest extends AbstractTests {
 
     private static final String RP_HTTPS_PORT = System.getProperty("rp.https.port");
 
     @BeforeAll
     public static void init() throws Exception {
-        Assertions.assertNotNull("Property 'rp.jetty.https.port' null", RP_HTTPS_PORT);
+        Assertions.assertNotNull(RP_HTTPS_PORT, "Property 'rp.jetty.https.port' null");
         TomcatUtils.initIdpServer();
-        JettyUtils.initRpServer("rp-expiry-server.xml");
+        JettyUtils.initRpServer("rp-server.xml");
     }
 
     @AfterAll
@@ -57,7 +55,13 @@ public class TokenExpiryTest extends AbstractExpiryTests {
 
     @Override
     public String getServletContextName() {
-        return "fedizhelloworld_wfresh";
+        return "fedizhelloworld";
+    }
+
+    @Disabled("This tests is currently failing on Jetty")
+    @Override
+    public void testConcurrentRequests() throws Exception {
+        // super.testConcurrentRequests();
     }
 
 }

@@ -17,7 +17,7 @@
  * under the License.
  */
 
-package org.apache.cxf.fediz.jetty9;
+package org.apache.cxf.fediz.jetty11;
 
 import java.io.File;
 import java.io.IOException;

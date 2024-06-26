@@ -96,7 +96,6 @@
             <version>${tomcat.version}</version>
             <scope>test</scope>
         </dependency>
-        <!-- Tomcat 9.x implements the Servlet 4.0 -->
         <dependency>
             <groupId>jakarta.servlet</groupId>
             <artifactId>jakarta.servlet-api</artifactId>

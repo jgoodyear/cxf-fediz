@@ -68,7 +68,6 @@
             <version>6.5.2.Final</version>
         </dependency>
 
-
         <dependency>
             <groupId>org.junit.jupiter</groupId>
             <artifactId>junit-jupiter-engine</artifactId>
@@ -189,22 +188,10 @@
             <version>${hsqldb.version}</version>
             <scope>provided</scope>
         </dependency>
-        <!--
-        <dependency>
-            <groupId>org.apache.openjpa</groupId>
-            <artifactId>openjpa-all</artifactId>
-            <version>${openjpa.version}</version>
-        </dependency>
-        -->
         <dependency>
             <groupId>org.apache.commons</groupId>
             <artifactId>commons-dbcp2</artifactId>
             <version>${commons.dbcp2.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>org.apache.openjpa</groupId>
-            <artifactId>openjpa-jdbc</artifactId>
-            <version>${openjpa.version}</version>
         </dependency>
         <dependency>
             <groupId>org.apache.openjpa</groupId>
@@ -226,12 +213,6 @@
             <groupId>commons-validator</groupId>
             <artifactId>commons-validator</artifactId>
             <version>${commons.validator.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>javax.persistence</groupId>
-            <artifactId>javax.persistence-api</artifactId>
-            <version>2.2</version>
-            <scope>test</scope>
         </dependency>
     </dependencies>
     <build>

@@ -17,16 +17,19 @@
  * under the License.
  */
 
-package org.apache.cxf.fediz.systests.jetty9;
+package org.apache.cxf.fediz.systests.jetty11;
 
-import org.apache.cxf.fediz.systests.common.AbstractTests;
+import org.apache.cxf.fediz.systests.common.AbstractClientCertTests;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
-import org.junit.jupiter.api.Disabled;
 
-public class JettyPreAuthSpringTest extends AbstractTests {
+/**
+ * In this test-case, the IdP is set up to require client authentication, rather than authenticating using a
+ * username + password, or via Kerberos.
+ */
+public class ClientCertificateTest extends AbstractClientCertTests {
 
     private static final String RP_HTTPS_PORT = System.getProperty("rp.https.port");
 
@@ -34,7 +37,7 @@ public class JettyPreAuthSpringTest extends AbstractTests {
     public static void init() throws Exception {
         Assertions.assertNotNull(RP_HTTPS_PORT, "Property 'rp.jetty.https.port' null");
         TomcatUtils.initIdpServer();
-        JettyUtils.initRpServer("rp-server.xml");
+        JettyUtils.initRpServer("rp-client-cert-server.xml");
     }
 
     @AfterAll
@@ -55,13 +58,7 @@ public class JettyPreAuthSpringTest extends AbstractTests {
 
     @Override
     public String getServletContextName() {
-        return "fedizspringhelloworld";
-    }
-
-    @Disabled("This tests is currently failing on Jetty")
-    @Override
-    public void testConcurrentRequests() throws Exception {
-        // super.testConcurrentRequests();
+        return "fedizhelloworld";
     }
 
 }

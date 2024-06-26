@@ -125,6 +125,7 @@
         </dependency>
     </dependencies>
     <build>
+         <testSourceDirectory>${basedir}/src/test/java</testSourceDirectory>
          <testResources>
             <testResource>
                 <directory>src/test/resources</directory>

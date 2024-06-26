@@ -25,8 +25,8 @@ import org.apache.cxf.fediz.service.idp.domain.TrustType;
 import org.apache.cxf.fediz.service.idp.domain.TrustedIdp;
 import org.apache.cxf.fediz.service.idp.service.TrustedIdpDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.Assert;
@@ -162,8 +162,18 @@ public class TrustedIdpDAOJPATest {
 
     @Test
     public void testTryAddExistingTrustedIdp() {
-        Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+        TrustedIdp realmB = trustedIdpDAO.getTrustedIDP("urn:org:apache:cxf:fediz:idp:realm-B");
+        Assertions.assertThrows(InvalidDataAccessApiUsageException.class, () -> {
+            trustedIdpDAO.addTrustedIDP(realmB);
+        });
+    }
+
+    @Test
+    public void testTryAddExistingTrustedIdpWithSameId() {
+        TrustedIdp realmB = trustedIdpDAO.getTrustedIDP("urn:org:apache:cxf:fediz:idp:realm-B");
+        Assertions.assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             TrustedIdp trustedIdp = createTrustedIdp("urn:org:apache:cxf:fediz:idp:realm-B");
+            trustedIdp.setId(realmB.getId());
             trustedIdpDAO.addTrustedIDP(trustedIdp);
         });
     }

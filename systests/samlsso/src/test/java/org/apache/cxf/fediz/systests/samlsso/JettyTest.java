@@ -33,19 +33,22 @@ import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Disabled;
 
 /**
- * Some tests for SAML SSO with the Jetty (9) plugin, invoking on the Fediz IdP configured for SAML SSO.
+ * Some tests for SAML SSO with the Jetty (11) plugin, invoking on the Fediz IdP configured for SAML SSO.
  */
 public class JettyTest extends AbstractTests {
 
-    private static final String IDP_HTTPS_PORT = System.getProperty("idp.https.port");
-    private static final String RP_HTTPS_PORT = System.getProperty("rp.jetty.https.port");
+    static String idpHttpsPort;
+    static String rpHttpsPort;
 
     private static Tomcat idpServer;
 
     @BeforeAll
     public static void init() throws Exception {
-        Assertions.assertNotNull("Property 'idp.https.port' null", IDP_HTTPS_PORT);
-        Assertions.assertNotNull("Property 'rp.jetty.https.port' null", RP_HTTPS_PORT);
+        idpHttpsPort = System.getProperty("idp.https.port");
+        Assertions.assertNotNull("Property 'idp.https.port' null", idpHttpsPort);
+
+        rpHttpsPort = System.getProperty("rp.jetty.https.port");
+        Assertions.assertNotNull("Property 'rp.jetty.https.port' null", rpHttpsPort);
 
         initIdp();
 
@@ -76,7 +79,7 @@ public class JettyTest extends AbstractTests {
         idpServer.getHost().setDeployOnStartup(true);
 
         Connector httpsConnector = new Connector();
-        httpsConnector.setPort(Integer.parseInt(IDP_HTTPS_PORT));
+        httpsConnector.setPort(Integer.parseInt(idpHttpsPort));
         httpsConnector.setSecure(true);
         httpsConnector.setScheme("https");
         httpsConnector.setProperty("keyAlias", "mytomidpkey");
@@ -102,12 +105,12 @@ public class JettyTest extends AbstractTests {
 
     @Override
     public String getIdpHttpsPort() {
-        return IDP_HTTPS_PORT;
+        return idpHttpsPort;
     }
 
     @Override
     public String getRpHttpsPort() {
-        return RP_HTTPS_PORT;
+        return rpHttpsPort;
     }
 
     @Override

@@ -29,6 +29,7 @@ import org.apache.cxf.fediz.service.idp.service.ApplicationDAO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.orm.jpa.JpaObjectRetrievalFailureException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
@@ -191,8 +192,10 @@ public class ApplicationDAOJPATest {
 
     @Test
     public void testTryAddExistingApplication() {
-        Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+        Application helloRealm = applicationDAO.getApplication("urn:org:apache:cxf:fediz:fedizhelloworld", null);
+        Assertions.assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             Application application = new Application();
+            application.setId(helloRealm.getId());
             application.setRealm("urn:org:apache:cxf:fediz:fedizhelloworld");
             application.setEncryptionCertificate("");
             application.setLifeTime(3600);

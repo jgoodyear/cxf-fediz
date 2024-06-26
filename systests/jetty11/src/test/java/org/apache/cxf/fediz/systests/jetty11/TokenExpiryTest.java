@@ -17,27 +17,26 @@
  * under the License.
  */
 
-package org.apache.cxf.fediz.systests.jetty9;
+package org.apache.cxf.fediz.systests.jetty11;
 
-import org.apache.cxf.fediz.systests.common.AbstractClientCertTests;
+import org.apache.cxf.fediz.systests.common.AbstractExpiryTests;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 
 /**
- * In this test-case, the IdP is set up to require client authentication, rather than authenticating using a
- * username + password, or via Kerberos.
+ * Some token expiry tests
  */
-public class ClientCertificatePreAuthSpringTest extends AbstractClientCertTests {
+public class TokenExpiryTest extends AbstractExpiryTests {
 
     private static final String RP_HTTPS_PORT = System.getProperty("rp.https.port");
 
     @BeforeAll
     public static void init() throws Exception {
-        Assertions.assertNotNull(RP_HTTPS_PORT, "Property 'rp.jetty.https.port' null");
+        Assertions.assertNotNull("Property 'rp.jetty.https.port' null", RP_HTTPS_PORT);
         TomcatUtils.initIdpServer();
-        JettyUtils.initRpServer("rp-client-cert-server.xml");
+        JettyUtils.initRpServer("rp-expiry-server.xml");
     }
 
     @AfterAll
@@ -58,7 +57,7 @@ public class ClientCertificatePreAuthSpringTest extends AbstractClientCertTests 
 
     @Override
     public String getServletContextName() {
-        return "fedizspringhelloworld";
+        return "fedizhelloworld_wfresh";
     }
 
 }

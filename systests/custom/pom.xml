@@ -99,6 +99,11 @@
             <version>${hsqldb.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.apache.cxf.fediz</groupId>
+            <artifactId>fediz-idp-core</artifactId>
+            <version>${project.version}</version>
+        </dependency>
     </dependencies>
     <build>
         <testResources>

@@ -24,8 +24,8 @@ import java.util.List;
 import org.apache.cxf.fediz.service.idp.domain.Claim;
 import org.apache.cxf.fediz.service.idp.service.ClaimDAO;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.dao.EmptyResultDataAccessException;
+import org.springframework.dao.InvalidDataAccessApiUsageException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 import org.springframework.util.Assert;
@@ -92,8 +92,18 @@ public class ClaimDAOJPATest {
 
     @Test
     public void testTryAddExistingClaim() {
-        Assertions.assertThrows(DataIntegrityViolationException.class, () -> {
+        Claim givenClaim = claimDAO.getClaim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+        Assertions.assertThrows(InvalidDataAccessApiUsageException.class, () -> {
+            claimDAO.addClaim(givenClaim);
+        });
+    }
+
+    @Test
+    public void testTryAddExistingClaimWithSameId() {
+        Claim givenClaim = claimDAO.getClaim("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname");
+        Assertions.assertThrows(InvalidDataAccessApiUsageException.class, () -> {
             Claim claim5 = new Claim();
+            claim5.setId(givenClaim.getId());
             claim5.setClaimType(URI.create("http://schemas.xmlsoap.org/ws/2005/05/identity/claims/givenname"));
             claim5.setDisplayName("firstname");
             claim5.setDescription("Description for firstname");
