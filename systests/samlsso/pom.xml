@@ -308,17 +308,16 @@
                 </executions>
             </plugin>
             <plugin>
-                <artifactId>maven-failsafe-plugin</artifactId>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <version>3.3.0</version>
                 <inherited>true</inherited>
                 <executions>
                     <execution>
                         <id>integration-test</id>
                         <phase>integration-test</phase>
-                        <goals>
-                            <goal>integration-test</goal>
-                        </goals>
                         <configuration>
-                            <skip>${skipTests}</skip>
+                            <!--<skip>${skipTests}</skip>-->
                             <systemPropertyVariables>
                                 <wt.headless>true</wt.headless>
                                 <idp.https.port>${idp.https.port}</idp.https.port>
@@ -338,9 +337,6 @@
                     <execution>
                         <id>verify</id>
                         <phase>verify</phase>
-                        <goals>
-                            <goal>verify</goal>
-                        </goals>
                     </execution>
                 </executions>
             </plugin>

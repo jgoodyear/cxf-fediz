@@ -32,7 +32,7 @@ public class JettyTest extends AbstractTests {
 
     @BeforeAll
     public static void init() throws Exception {
-        Assertions.assertNotNull(RP_HTTPS_PORT, "Property 'rp.jetty.https.port' null");
+        Assertions.assertNotNull(RP_HTTPS_PORT, "Property 'rp.https.port' null");
         TomcatUtils.initIdpServer();
         JettyUtils.initRpServer("rp-server.xml");
     }

@@ -53,7 +53,7 @@
     <bean id="exceptionMapper"
         class="org.apache.cxf.fediz.service.idp.rest.RestServiceExceptionMapper" />
 
-    <bean id="jsonProvider" class="com.fasterxml.jackson.jaxrs.json.JacksonJaxbJsonProvider" />
+    <bean id="jsonProvider" class="com.fasterxml.jackson.jakarta.rs.json.JacksonXmlBindJsonProvider" />
 
     <jaxrs:server id="idpService" address="/rs">
         <jaxrs:serviceBeans>

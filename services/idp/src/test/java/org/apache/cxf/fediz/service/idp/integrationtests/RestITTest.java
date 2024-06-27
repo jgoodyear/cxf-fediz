@@ -44,6 +44,8 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
 import org.junit.jupiter.api.Test;
 
+import static java.nio.charset.StandardCharsets.UTF_8;
+
 public class RestITTest {
 
     private static String idpHttpsPort;
@@ -232,7 +234,7 @@ public class RestITTest {
 
     private static String getBasicAuthentication(String username, String password) {
         String token = username + ':' + password;
-        return "Basic " + Base64.getEncoder().encodeToString(token.getBytes());
+        return "Basic " + Base64.getEncoder().encodeToString(token.getBytes(UTF_8));
     }
 
     private String getContextName() {

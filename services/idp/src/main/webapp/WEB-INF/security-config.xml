@@ -64,6 +64,7 @@
     <!-- Main entry point for WS-Federation -->
     <security:http pattern="/federation" use-expressions="true" entry-point-ref="fedizEntryPoint">
         <security:csrf disabled="true"/>
+        <security:intercept-url pattern="/**" access="permitAll" />
         <security:custom-filter after="CHANNEL_FILTER" ref="stsUPPortFilter" />
         <security:custom-filter after="SERVLET_API_SUPPORT_FILTER" ref="entitlementsEnricher" />
         <security:intercept-url pattern="/FederationMetadata/2007-06/FederationMetadata.xml" access="isAnonymous() or isAuthenticated()" />
@@ -79,6 +80,7 @@
     <!-- Main entry point for SAML SSO -->
     <security:http pattern="/saml" use-expressions="true" entry-point-ref="fedizEntryPoint">
         <security:csrf disabled="true"/>
+        <security:intercept-url pattern="/**" access="permitAll" />
         <security:custom-filter after="CHANNEL_FILTER" ref="stsUPPortFilter" />
         <security:custom-filter after="SERVLET_API_SUPPORT_FILTER" ref="entitlementsEnricher" />
 

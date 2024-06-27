@@ -50,6 +50,8 @@ public class JettyTest extends AbstractTests {
         rpHttpsPort = System.getProperty("rp.jetty.https.port");
         Assertions.assertNotNull("Property 'rp.jetty.https.port' null", rpHttpsPort);
 
+        System.out.println("idpHttpsPort: " + System.getProperty("idp.https.port"));
+        System.out.println("rpHttpsPort: " + System.getProperty("rp.jetty.https.port"));
         initIdp();
 
         JettyUtils.initRpServer("rp-server.xml");
@@ -130,6 +132,7 @@ public class JettyTest extends AbstractTests {
     }
 
     @Disabled("This tests is currently failing on Jetty")
+    @Override
     public void testRPLogout() throws Exception {
         //
     }

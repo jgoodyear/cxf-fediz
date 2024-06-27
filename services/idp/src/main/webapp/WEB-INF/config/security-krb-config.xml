@@ -7,9 +7,9 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License. You may obtain a copy of the License at
- 
+
   http://www.apache.org/licenses/LICENSE-2.0
- 
+
   Unless required by applicable law or agreed to in writing,
   software distributed under the License is distributed on an
   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -33,12 +33,12 @@
     <!-- Kerberos entry point -->
     <bean id="kerberosEntryPoint"
           class="org.apache.cxf.fediz.service.idp.kerberos.KerberosEntryPoint" />
-    
+
     <bean id="kerberosAuthenticationProcessingFilter"
           class="org.apache.cxf.fediz.service.idp.kerberos.KerberosAuthenticationProcessingFilter">
           <property name="authenticationManager" ref="authenticationManagers" />
     </bean>
-    
+
     <security:http pattern="/federation/krb" use-expressions="true" entry-point-ref="kerberosEntryPoint">
         <security:intercept-url requires-channel="https" pattern="/federation/krb/login*" access="isAuthenticated()" />
         <security:custom-filter after="CHANNEL_FILTER" ref="stsKrbPortFilter" />
@@ -53,7 +53,7 @@
             <security:xss-protection />
         </security:headers>
     </security:http>
-    
+
     <security:http pattern="/saml/krb" use-expressions="true" entry-point-ref="kerberosEntryPoint">
         <security:intercept-url requires-channel="https" pattern="/saml/krb/login*" access="isAuthenticated()" />
         <security:custom-filter after="CHANNEL_FILTER" ref="stsKrbPortFilter" />
@@ -68,16 +68,16 @@
             <security:xss-protection />
         </security:headers>
     </security:http>
-    
+
     <bean id="stsKrbPortFilter" class="org.apache.cxf.fediz.service.idp.STSPortFilter">
         <property name="authenticationProvider" ref="stsKrbAuthProvider" />
     </bean>
-    
+
     <!--<bean id="kerberosTokenValidator" class="org.apache.cxf.fediz.service.idp.kerberos.KerberosTokenValidator">
         <property name="contextName" value="bob" />
         <property name="serviceName" value="bob@service.ws.apache.org" />
     </bean>-->
-	
+
 	<!-- Kerberos authentication provider -->
     <bean id="stsKrbAuthProvider" class="org.apache.cxf.fediz.service.idp.STSKrbAuthenticationProvider">
         <property name="wsdlLocation" value="https://localhost:0/fediz-idp-sts/${realm.STS_URI}/STSServiceTransportKerberos?wsdl" />
