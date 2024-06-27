@@ -4,16 +4,16 @@ Building Apache CXF Fediz
 Initial Setup
 -------------
 
-1) Install J2SE 8 SDK, which can be downloaded from 
+1) Install J2SE 11 SDK, which can be downloaded from
    http://www.oracle.com/technetwork/java/javase/downloads/index.html
 
-2) Make sure that your JAVA_HOME environment variable is set to the newly installed 
-   JDK location, and that your PATH includes %JAVA_HOME%\bin (Windows) or 
+2) Make sure that your JAVA_HOME environment variable is set to the newly installed
+   JDK location, and that your PATH includes %JAVA_HOME%\bin (Windows) or
    $JAVA_HOME$/bin (*nix).
 
-3) Install Maven 3.0.x or newer, which can be downloaded from 
-   http://maven.apache.org/download.html. Make sure that your PATH includes 
-   the MVN_HOME/bin directory. 
+3) Install Maven 3.0.x or newer, which can be downloaded from
+   http://maven.apache.org/download.html. Make sure that your PATH includes
+   the MVN_HOME/bin directory.
 
 
 Building
@@ -27,9 +27,9 @@ Building
          $> mvn -Pfastinstall.
    This will compile Apache CXF Fediz without running the tests and takes less
    time to build.
-   Depending on the load of remote Maven repositories, you may have 
-   to run "mvn" multiple times until the required dependencies are 
-   all located in your local Maven repository. It usually takes some time for 
+   Depending on the load of remote Maven repositories, you may have
+   to run "mvn" multiple times until the required dependencies are
+   all located in your local Maven repository. It usually takes some time for
    Maven to download required dependencies in the first build.
 
 

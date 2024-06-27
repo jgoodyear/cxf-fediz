@@ -35,6 +35,12 @@
             <artifactId>htmlunit</artifactId>
             <version>${htmlunit.version}</version>
             <scope>test</scope>
+            <exclusions>
+                <exclusion>
+                    <groupId>commons-logging</groupId>
+                    <artifactId>commons-logging</artifactId>
+                </exclusion>
+            </exclusions>
         </dependency>
         <dependency>
             <groupId>org.apache.tomcat.embed</groupId>
@@ -64,6 +70,13 @@
             <groupId>org.apache.cxf.fediz</groupId>
             <artifactId>fediz-spring</artifactId>
             <version>${project.version}</version>
+            <scope>compile</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.apache.cxf.fediz</groupId>
+            <artifactId>fediz-oidc</artifactId>
+            <version>${project.version}</version>
+            <type>war</type>
             <scope>compile</scope>
         </dependency>
         <dependency>
@@ -317,6 +330,17 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <argLine>-Dwt.headless=true -Didp.https.port=${idp.https.port} -Drp.https.port=${rp.https.port} -Djava.security.auth.login.config=src/test/resources/sts.jaas</argLine>
+                    <excludes>
+                        <exclude>**/*.java</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

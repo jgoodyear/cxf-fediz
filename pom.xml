@@ -506,7 +506,7 @@
                         <runOrder>alphabetical</runOrder>
                         <reportFormat>${fediz.surefire.format}</reportFormat>
                         <useFile>${fediz.surefire.usefile}</useFile>
-                        <forkMode>${fediz.surefire.fork.mode}</forkMode>
+                        <forkCount>1</forkCount>
                         <childDelegation>false</childDelegation>
                         <argLine>${fediz.surefire.fork.vmargs}</argLine>
                         <enableAssertions>${fediz.surefire.enable.assertions}</enableAssertions>

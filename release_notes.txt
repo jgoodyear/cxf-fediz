@@ -12,7 +12,7 @@ Apache CXF Fediz provide the following features:
 * Role information encoded as AttributeStatement in SAML 1.1/2.0 tokens
 * Claims information provided by FederationPrincipal interface
 * Fediz IdP supports Resource and Requestor IDP role, Home Realm Discovery Service, ...
-* Support for Jetty, Tomcat, Websphere and Spring Security 4.x
+* Support for Jetty, Tomcat, and Spring Security 6.x
 * Support for logout in the RP and IdP
 * Support for logging on to the IdP via UsernamePassword, Kerberos and TLS
 client authentication
@@ -24,24 +24,24 @@ client authentication
 * OpenId Connect (OIDC)
 
 
-2. Installation Prerequisites 
+2. Installation Prerequisites
 
 Before installing Apache CXF Fediz, make sure the following products,
 with the specified versions, are installed on your system:
 
-    * Java 8 Development Kit or higher
+    * Java 17 Development Kit or higher
     * Apache Maven 3.x to build the samples
 
 3. Installation Procedures
 
-Follow the Getting Started instructions at 
+Follow the Getting Started instructions at
 http://cxf.apache.org/fediz.html#Fediz-Gettingstarted for information
 on installing the Fediz IDP and IdP STS.
 
 4. Building the Samples
 
 Building the samples included in the binary distribution is easy. Change to
-the examples directory and follow the build instructions in the README.txt file 
+the examples directory and follow the build instructions in the README.txt file
 included with each sample.
 
 5. Replacing provided keystores
@@ -65,6 +65,12 @@ N.A.
 
 
 8. Specific issues, features, and improvements fixed in this version
+
+Release Notes - CXF-Fediz - Version 1.7.0
+
+Improvement
+    [FEDIZ-257] - Apache CXF Fediz Tomcat Plugin ver 1.6.1 does not work with Jakarta
+
 
 Release Notes - CXF-Fediz - Version 1.6.2
 
@@ -587,7 +593,7 @@ Release Notes - CXF-Fediz - Version 1.0.2
 ** New Feature
     * [FEDIZ-30] - Relying Party can enforce re-authentication using wfresh parameter
     * [FEDIZ-28] - Logout capability in IDP
- 
+
 ** Task
     * [FEDIZ-29] - Migrate to CXF 2.6.3
 
@@ -603,7 +609,7 @@ Release Notes - CXF-Fediz - Version 1.0.1
     * [FEDIZ-22] - Improved support for other claims encoding in SAML attributes
 
 ** New Feature
- 
+
 ** Task
 
 ** Test
