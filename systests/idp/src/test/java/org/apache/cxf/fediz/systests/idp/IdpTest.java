@@ -20,6 +20,7 @@
 package org.apache.cxf.fediz.systests.idp;
 
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Base64;
@@ -76,12 +77,12 @@ public class IdpTest {
         rpHttpsPort = System.getProperty("rp.https.port");
         Assertions.assertNotNull("Property 'rp.https.port' null", rpHttpsPort);
 
-        idpServer = startServer(true, idpHttpsPort);
+        idpServer = startServer(idpHttpsPort);
 
         WSSConfig.init();
     }
 
-    private static Tomcat startServer(boolean idp, String port) throws LifecycleException {
+    private static Tomcat startServer(String port) throws LifecycleException {
         Tomcat server = new Tomcat();
         server.setPort(0);
         final Path targetDir = Paths.get("target").toAbsolutePath();
@@ -199,7 +200,7 @@ public class IdpTest {
         final WebClient webClient = new WebClient();
         webClient.getOptions().setUseInsecureSSL(true);
         webClient.addRequestHeader("Authorization", "Basic "
-            + Base64.getEncoder().encodeToString((user + ":" + password).getBytes()));
+            + Base64.getEncoder().encodeToString((user + ":" + password).getBytes(StandardCharsets.UTF_8)));
 
         //
         // First invocation
@@ -229,7 +230,7 @@ public class IdpTest {
 
         webClient.removeRequestHeader("Authorization");
         webClient.addRequestHeader("Authorization", "Basic "
-            + Base64.getEncoder().encodeToString(("mallory" + ":" + password).getBytes()));
+            + Base64.getEncoder().encodeToString(("mallory" + ":" + password).getBytes(StandardCharsets.UTF_8)));
 
         webClient.getOptions().setJavaScriptEnabled(false);
         idpPage = webClient.getPage(url);
