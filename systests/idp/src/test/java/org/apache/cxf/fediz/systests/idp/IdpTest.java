@@ -101,7 +101,7 @@ public class IdpTest {
         httpsConnector.setProperty("truststorePass", "tompass");
         httpsConnector.setProperty("truststoreFile", "test-classes/server.jks");
         httpsConnector.setProperty("clientAuth", "want");
-        // httpsConnector.setProperty("clientAuth", "false");
+        //httpsConnector.setProperty("clientAuth", "false");
         httpsConnector.setProperty("sslProtocol", "TLS");
         httpsConnector.setProperty("SSLEnabled", "true");
 
