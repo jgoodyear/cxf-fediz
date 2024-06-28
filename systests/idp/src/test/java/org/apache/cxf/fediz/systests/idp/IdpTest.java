@@ -84,6 +84,7 @@ public class IdpTest {
 
     private static Tomcat startServer(String port) throws LifecycleException {
         Tomcat server = new Tomcat();
+        server.setHostname("localhost");
         server.setPort(0);
         final Path targetDir = Paths.get("target").toAbsolutePath();
         server.setBaseDir(targetDir.toString());
@@ -96,17 +97,17 @@ public class IdpTest {
         httpsConnector.setPort(Integer.parseInt(port));
         httpsConnector.setSecure(true);
         httpsConnector.setScheme("https");
-        httpsConnector.setProperty("keyAlias", "mytomidpkey");
-        httpsConnector.setProperty("keystorePass", "tompass");
-        httpsConnector.setProperty("keystoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("truststorePass", "tompass");
+        httpsConnector.setProperty("protocol", "HTTP/1.1");
+        httpsConnector.setProperty("certificateKeyAlias", "mytomidpkey");
+        httpsConnector.setProperty("certificateKeystorePassword", "tompass");
+        httpsConnector.setProperty("certificateKeystoreFile", "test-classes/server.jks");
+        httpsConnector.setProperty("truststorePassword", "tompass");
         httpsConnector.setProperty("truststoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("clientAuth", "want");
+        //httpsConnector.setProperty("clientAuth", "want");
         //httpsConnector.setProperty("clientAuth", "false");
-        httpsConnector.setProperty("sslProtocol", "TLS");
+        httpsConnector.setProperty("sslProtocol", "TLSv1.2");
         httpsConnector.setProperty("SSLEnabled", "true");
-
-        server.getService().addConnector(httpsConnector);
+        httpsConnector.setProperty("throwOnFailure", "true");
 
         Path stsWebapp = targetDir.resolve(server.getHost().getAppBase()).resolve("fediz-idp-sts");
         server.addWebapp("/fediz-idp-sts", stsWebapp.toString());
@@ -115,6 +116,7 @@ public class IdpTest {
         server.addWebapp("/fediz-idp", idpWebapp.toString());
 
         server.start();
+        server.getService().addConnector(httpsConnector);
 
         return server;
     }
