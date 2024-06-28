@@ -191,7 +191,6 @@
                             <outputDirectory>target</outputDirectory>
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
-                            <stripVersion>true</stripVersion>
                         </configuration>
                     </execution>
                     <execution>
@@ -284,7 +283,6 @@
                             <goal>integration-test</goal>
                         </goals>
                         <configuration>
-                            <skip>${skipTests}</skip>
                             <reuseForks>false</reuseForks>
                             <systemPropertyVariables>
                                 <wt.headless>true</wt.headless>

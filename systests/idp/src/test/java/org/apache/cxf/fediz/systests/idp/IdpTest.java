@@ -50,6 +50,8 @@ import org.apache.cxf.fediz.core.util.DOMUtils;
 import org.apache.cxf.helpers.IOUtils;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.tomcat.util.net.SSLHostConfig;
+import org.apache.tomcat.util.net.SSLHostConfigCertificate;
 import org.apache.wss4j.dom.engine.WSSConfig;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
@@ -98,16 +100,26 @@ public class IdpTest {
         httpsConnector.setSecure(true);
         httpsConnector.setScheme("https");
         httpsConnector.setProperty("protocol", "HTTP/1.1");
-        httpsConnector.setProperty("certificateKeyAlias", "mytomidpkey");
-        httpsConnector.setProperty("certificateKeystorePassword", "tompass");
-        httpsConnector.setProperty("certificateKeystoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("truststorePassword", "tompass");
-        httpsConnector.setProperty("truststoreFile", "test-classes/server.jks");
-        //httpsConnector.setProperty("clientAuth", "want");
-        //httpsConnector.setProperty("clientAuth", "false");
-        httpsConnector.setProperty("sslProtocol", "TLSv1.2");
+        //httpsConnector.setProperty("clientAuth", "true");
         httpsConnector.setProperty("SSLEnabled", "true");
         httpsConnector.setProperty("throwOnFailure", "true");
+
+        SSLHostConfig sslHostConfig = new SSLHostConfig();
+        sslHostConfig.setSslProtocol("TLSv1.2");
+        sslHostConfig.setTruststorePassword("tompass");
+        sslHostConfig.setTruststoreFile("test-classes/alice_client.jks");
+        sslHostConfig.setProtocols("TLSv1.2");
+
+        SSLHostConfigCertificate sslHostConfigCertificate = new SSLHostConfigCertificate(sslHostConfig,
+                SSLHostConfigCertificate.Type.RSA);
+        sslHostConfigCertificate.setCertificateKeyAlias("mytomidpkey");
+        sslHostConfigCertificate.setCertificateKeystorePassword("tompass");
+        sslHostConfigCertificate.setCertificateKeystoreFile("test-classes/server.jks");
+        sslHostConfigCertificate.setCertificateKeystoreType("RSA");
+
+        sslHostConfig.addCertificate(sslHostConfigCertificate);
+
+        httpsConnector.addSslHostConfig(sslHostConfig);
 
         Path stsWebapp = targetDir.resolve(server.getHost().getAppBase()).resolve("fediz-idp-sts");
         server.addWebapp("/fediz-idp-sts", stsWebapp.toString());
@@ -115,8 +127,8 @@ public class IdpTest {
         Path idpWebapp = targetDir.resolve(server.getHost().getAppBase()).resolve("fediz-idp");
         server.addWebapp("/fediz-idp", idpWebapp.toString());
 
-        server.start();
         server.getService().addConnector(httpsConnector);
+        server.start();
 
         return server;
     }
