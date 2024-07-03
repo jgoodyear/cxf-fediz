@@ -7,9 +7,9 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License. You may obtain a copy of the License at
- 
+
   http://www.apache.org/licenses/LICENSE-2.0
- 
+
   Unless required by applicable law or agreed to in writing,
   software distributed under the License is distributed on an
   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -114,7 +114,7 @@
                 </excludes>
             </testResource>
         </testResources>
-        
+
         <plugins>
             <plugin>
                 <groupId>org.codehaus.mojo</groupId>
@@ -193,7 +193,6 @@
                             <outputAbsoluteArtifactFilename>true</outputAbsoluteArtifactFilename>
                             <overWriteSnapshots>true</overWriteSnapshots>
                             <overWriteIfNewer>true</overWriteIfNewer>
-                            <stripVersion>true</stripVersion>
                         </configuration>
                     </execution>
                 </executions>
@@ -209,7 +208,7 @@
                     </goals>
                     <configuration>
                       <outputDirectory>${basedir}/target/tomcat/rp/webapps/cxfWebapp/WEB-INF/classes/</outputDirectory>
-                      <resources>          
+                      <resources>
                         <resource>
                           <directory>${basedir}/target/test-classes</directory>
                           <includes>
@@ -217,8 +216,8 @@
                           </includes>
                           <filtering>true</filtering>
                         </resource>
-                      </resources>              
-                    </configuration>            
+                      </resources>
+                    </configuration>
                   </execution>
                   <execution>
                     <id>copy-resources2</id>
@@ -228,7 +227,7 @@
                     </goals>
                     <configuration>
                       <outputDirectory>${basedir}/target/tomcat/rp/webapps/cxfWebappExpiry/WEB-INF/classes/</outputDirectory>
-                      <resources>          
+                      <resources>
                         <resource>
                           <directory>${basedir}/target/test-classes/expiry</directory>
                           <includes>
@@ -236,8 +235,8 @@
                           </includes>
                           <filtering>true</filtering>
                         </resource>
-                      </resources>              
-                    </configuration>            
+                      </resources>
+                    </configuration>
                   </execution>
                   <execution>
                         <id>copy-entities-to-idp</id>
@@ -247,7 +246,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${basedir}/target/tomcat/idp/webapps/fediz-idp/WEB-INF/classes</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>${basedir}/src/test/resources/realma</directory>
                                     <includes>
@@ -255,8 +254,8 @@
                                     </includes>
                                     <filtering>true</filtering>
                                 </resource>
-                            </resources>              
-                        </configuration>            
+                            </resources>
+                        </configuration>
                     </execution>
                     <execution>
                         <id>copy-customised-sts-config</id>
@@ -266,7 +265,7 @@
                         </goals>
                         <configuration>
                             <outputDirectory>${basedir}/target/tomcat/idp/webapps/fediz-idp-sts/WEB-INF</outputDirectory>
-                            <resources>          
+                            <resources>
                                 <resource>
                                     <directory>${basedir}/src/test/resources/realma</directory>
                                     <includes>
@@ -274,9 +273,9 @@
                                     </includes>
                                     <filtering>false</filtering>
                                 </resource>
-                            </resources>              
-                            <overwrite>true</overwrite>       
-                        </configuration>            
+                            </resources>
+                            <overwrite>true</overwrite>
+                        </configuration>
                     </execution>
                 </executions>
             </plugin>
@@ -291,7 +290,6 @@
                             <goal>integration-test</goal>
                         </goals>
                         <configuration>
-                            <skip>${skipTests}</skip>
                             <systemPropertyVariables>
                                 <wt.headless>true</wt.headless>
                                 <idp.https.port>${idp.https.port}</idp.https.port>
@@ -312,6 +310,17 @@
                         </goals>
                     </execution>
                 </executions>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-surefire-plugin</artifactId>
+                <inherited>true</inherited>
+                <configuration>
+                    <argLine>-Dwt.headless=true -Didp.https.port=${idp.https.port} -Drp.https.port=${rp.https.port} -Djava.util.logging.config.file=${basedir}/target/test-classes/logging.properties</argLine>
+                    <excludes>
+                        <exclude>**/*.java</exclude>
+                    </excludes>
+                </configuration>
             </plugin>
         </plugins>
     </build>

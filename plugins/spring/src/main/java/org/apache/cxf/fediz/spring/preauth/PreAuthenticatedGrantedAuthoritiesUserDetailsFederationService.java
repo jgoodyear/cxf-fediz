@@ -56,7 +56,7 @@ public class PreAuthenticatedGrantedAuthoritiesUserDetailsFederationService
      * the token.getDetails() method.
      */
     public final UserDetails loadUserDetails(PreAuthenticatedAuthenticationToken token) {
-        Assert.notNull(token.getDetails());
+        Assert.notNull(token.getDetails(), "Token Details were null.");
         Assert.isInstanceOf(GrantedAuthoritiesContainer.class, token.getDetails());
         Assert.isInstanceOf(FedizPrincipal.class, token.getPrincipal());
         Collection<? extends GrantedAuthority> authorities =

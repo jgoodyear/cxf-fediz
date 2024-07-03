@@ -27,6 +27,8 @@ import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.cxf.fediz.systests.common.AbstractTests;
 
+import org.apache.tomcat.util.net.SSLHostConfig;
+import org.apache.tomcat.util.net.SSLHostConfigCertificate;
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeAll;
@@ -84,15 +86,27 @@ public class JettyTest extends AbstractTests {
         httpsConnector.setPort(Integer.parseInt(idpHttpsPort));
         httpsConnector.setSecure(true);
         httpsConnector.setScheme("https");
-        httpsConnector.setProperty("keyAlias", "mytomidpkey");
-        httpsConnector.setProperty("keystorePass", "tompass");
-        httpsConnector.setProperty("keystoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("truststorePass", "tompass");
-        httpsConnector.setProperty("truststoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("clientAuth", "want");
-        // httpsConnector.setProperty("clientAuth", "false");
-        httpsConnector.setProperty("sslProtocol", "TLS");
+        httpsConnector.setProperty("protocol", "https");
         httpsConnector.setProperty("SSLEnabled", "true");
+        httpsConnector.setProperty("throwOnFailure", "true");
+        httpsConnector.setThrowOnFailure(true);
+
+        SSLHostConfig sslHostConfig = new SSLHostConfig();
+        sslHostConfig.setSslProtocol("TLSv1.2");
+        sslHostConfig.setTruststorePassword("storepass");
+        sslHostConfig.setTruststoreFile("test-classes/clienttrust.jks");
+        sslHostConfig.setProtocols("all");
+        sslHostConfig.setTruststoreType("JKS");
+
+        SSLHostConfigCertificate sslHostConfigCertificate = new SSLHostConfigCertificate(sslHostConfig,
+                SSLHostConfigCertificate.Type.RSA);
+        sslHostConfigCertificate.setCertificateKeyAlias("mytomidpkey");
+        sslHostConfigCertificate.setCertificateKeystorePassword("tompass");
+        sslHostConfigCertificate.setCertificateKeystoreFile("test-classes/server.jks");
+        sslHostConfigCertificate.setCertificateKeystoreType("JKS");
+
+        sslHostConfig.addCertificate(sslHostConfigCertificate);
+        httpsConnector.addSslHostConfig(sslHostConfig);
 
         idpServer.getService().addConnector(httpsConnector);
 

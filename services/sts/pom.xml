@@ -264,7 +264,6 @@
                     </jettyXmls>
                     <stopPort>${jetty.port}</stopPort>
                     <stopKey>STOP</stopKey>
-                    <skip>${skipTests}</skip>
                 </configuration>
                 <executions>
                     <execution>
@@ -297,7 +296,6 @@
                             <goal>integration-test</goal>
                         </goals>
                         <configuration>
-                            <skip>${skipTests}</skip>
                             <systemPropertyVariables>
                                 <sts.https.port>${sts.https.port}</sts.https.port>
                                 <catalina.base>target</catalina.base>

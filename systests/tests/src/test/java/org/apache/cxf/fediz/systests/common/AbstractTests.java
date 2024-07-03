@@ -25,24 +25,12 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-
-import com.gargoylesoftware.htmlunit.CookieManager;
-import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
-import com.gargoylesoftware.htmlunit.HttpMethod;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebRequest;
-import com.gargoylesoftware.htmlunit.html.DomElement;
-import com.gargoylesoftware.htmlunit.html.DomNodeList;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.gargoylesoftware.htmlunit.util.NameValuePair;
-import com.gargoylesoftware.htmlunit.xml.XmlPage;
 
 import org.apache.cxf.common.util.Base64Utility;
 import org.apache.cxf.fediz.core.ClaimTypes;
@@ -55,6 +43,18 @@ import org.apache.wss4j.common.util.DOM2Writer;
 import org.apache.wss4j.dom.engine.WSSConfig;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
+import org.htmlunit.CookieManager;
+import org.htmlunit.FailingHttpStatusCodeException;
+import org.htmlunit.HttpMethod;
+import org.htmlunit.WebClient;
+import org.htmlunit.WebRequest;
+import org.htmlunit.html.DomElement;
+import org.htmlunit.html.DomNodeList;
+import org.htmlunit.html.HtmlForm;
+import org.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlSubmitInput;
+import org.htmlunit.util.NameValuePair;
+import org.htmlunit.xml.XmlPage;
 
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -775,7 +775,8 @@ public abstract class AbstractTests {
 
                     // Re-encode response
                     String responseMessage = DOM2Writer.nodeToString(responseDoc);
-                    result.setAttributeNS(null, "value", Base64Utility.encode((entity + responseMessage).getBytes()));
+                    result.setAttributeNS(null, "value", Base64Utility.encode(
+                            (entity + responseMessage).getBytes(StandardCharsets.UTF_8)));
                 }
             }
         }
@@ -847,7 +848,8 @@ public abstract class AbstractTests {
 
                     // Re-encode response
                     String responseMessage = DOM2Writer.nodeToString(responseDoc);
-                    result.setAttributeNS(null, "value", Base64Utility.encode((entity + responseMessage).getBytes()));
+                    result.setAttributeNS(null, "value", Base64Utility.encode(
+                            (entity + responseMessage).getBytes(StandardCharsets.UTF_8)));
                 }
             }
         }
@@ -1015,7 +1017,7 @@ public abstract class AbstractTests {
         try (InputStream is = AbstractTests.class.getResourceAsStream(location)) {
             byte[] content = new byte[is.available()];
             is.read(content);
-            return new String(content);
+            return new String(content, StandardCharsets.UTF_8);
         }
     }
 

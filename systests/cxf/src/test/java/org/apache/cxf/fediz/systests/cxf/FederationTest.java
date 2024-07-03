@@ -22,14 +22,6 @@ package org.apache.cxf.fediz.systests.cxf;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.gargoylesoftware.htmlunit.CookieManager;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.DomElement;
-import com.gargoylesoftware.htmlunit.html.DomNodeList;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;
@@ -37,6 +29,15 @@ import org.apache.catalina.startup.Tomcat;
 import org.apache.cxf.fediz.systests.common.AbstractTests;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.tomcat.util.net.SSLHostConfig;
+import org.apache.tomcat.util.net.SSLHostConfigCertificate;
+import org.htmlunit.CookieManager;
+import org.htmlunit.WebClient;
+import org.htmlunit.html.DomElement;
+import org.htmlunit.html.DomNodeList;
+import org.htmlunit.html.HtmlForm;
+import org.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlSubmitInput;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -78,20 +79,33 @@ public class FederationTest extends AbstractTests {
         httpsConnector.setPort(Integer.parseInt(idpHttpsPort));
         httpsConnector.setSecure(true);
         httpsConnector.setScheme("https");
-        httpsConnector.setProperty("keyAlias", "mytomidpkey");
-        httpsConnector.setProperty("keystorePass", "tompass");
-        httpsConnector.setProperty("keystoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("truststorePass", "tompass");
-        httpsConnector.setProperty("truststoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("clientAuth", "want");
-        // httpsConnector.setProperty("clientAuth", "false");
-        httpsConnector.setProperty("sslProtocol", "TLS");
+        httpsConnector.setProperty("protocol", "https");
         httpsConnector.setProperty("SSLEnabled", "true");
+        httpsConnector.setProperty("throwOnFailure", "true");
+        httpsConnector.setThrowOnFailure(true);
+
+        SSLHostConfig sslHostConfig = new SSLHostConfig();
+        sslHostConfig.setSslProtocol("TLSv1.2");
+        sslHostConfig.setTruststorePassword("storepass");
+        sslHostConfig.setTruststoreFile("test-classes/clienttrust.jks");
+        sslHostConfig.setProtocols("all");
+        sslHostConfig.setTruststoreType("JKS");
+
+        SSLHostConfigCertificate sslHostConfigCertificate = new SSLHostConfigCertificate(sslHostConfig,
+                SSLHostConfigCertificate.Type.RSA);
+        sslHostConfigCertificate.setCertificateKeyAlias("mytomidpkey");
+        sslHostConfigCertificate.setCertificateKeystorePassword("tompass");
+        sslHostConfigCertificate.setCertificateKeystoreFile("test-classes/server.jks");
+        sslHostConfigCertificate.setCertificateKeystoreType("JKS");
+
+        sslHostConfig.addCertificate(sslHostConfigCertificate);
+        httpsConnector.addSslHostConfig(sslHostConfig);
 
         idpServer.getService().addConnector(httpsConnector);
 
-        idpServer.addWebapp("/fediz-idp-sts", "fediz-idp-sts");
         idpServer.addWebapp("/fediz-idp", "fediz-idp");
+        idpServer.addWebapp("/fediz-idp-sts", "fediz-idp-sts");
+
 
         idpServer.start();
     }
@@ -110,15 +124,28 @@ public class FederationTest extends AbstractTests {
         httpsConnector.setPort(Integer.parseInt(rpHttpsPort));
         httpsConnector.setSecure(true);
         httpsConnector.setScheme("https");
-        httpsConnector.setProperty("keyAlias", "mytomidpkey");
-        httpsConnector.setProperty("keystorePass", "tompass");
-        httpsConnector.setProperty("keystoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("truststorePass", "tompass");
-        httpsConnector.setProperty("truststoreFile", "test-classes/server.jks");
-        // httpsConnector.setProperty("clientAuth", "false");
-        httpsConnector.setProperty("clientAuth", "want");
-        httpsConnector.setProperty("sslProtocol", "TLS");
+        httpsConnector.setProperty("protocol", "https");
         httpsConnector.setProperty("SSLEnabled", "true");
+        httpsConnector.setProperty("throwOnFailure", "true");
+        httpsConnector.setThrowOnFailure(true);
+
+        SSLHostConfig sslHostConfig = new SSLHostConfig();
+        sslHostConfig.setSslProtocol("TLSv1.2");
+        sslHostConfig.setTruststorePassword("storepass");
+        sslHostConfig.setTruststoreFile("test-classes/clienttrust.jks");
+        sslHostConfig.setProtocols("all");
+        sslHostConfig.setTruststoreType("JKS");
+
+        SSLHostConfigCertificate sslHostConfigCertificate = new SSLHostConfigCertificate(sslHostConfig,
+                SSLHostConfigCertificate.Type.RSA);
+        sslHostConfigCertificate.setCertificateKeyAlias("mytomidpkey");
+        sslHostConfigCertificate.setCertificateKeystorePassword("tompass");
+        sslHostConfigCertificate.setCertificateKeystoreFile("test-classes/server.jks");
+        sslHostConfigCertificate.setCertificateKeystoreType("JKS");
+
+        sslHostConfig.addCertificate(sslHostConfigCertificate);
+        httpsConnector.addSslHostConfig(sslHostConfig);
+
 
         rpServer.getService().addConnector(httpsConnector);
 

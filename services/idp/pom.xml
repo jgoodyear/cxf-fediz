@@ -65,15 +65,11 @@
         <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-web</artifactId>
-            <version>3.3.1</version>
+            <version>2.7.18</version>
             <exclusions>
                 <exclusion>
                     <groupId>org.springframework.boot</groupId>
                     <artifactId>spring-boot-starter-logging</artifactId>
-                </exclusion>
-                <exclusion>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-starter-tomcat</artifactId>
                 </exclusion>
             </exclusions>
         </dependency>
@@ -89,16 +85,13 @@
         </dependency>
 
         <!-- Legacy libs -->
-        <dependency>
-            <groupId>javax.ws.rs</groupId>
-            <artifactId>javax.ws.rs-api</artifactId>
-            <version>2.0</version>
-        </dependency>
+        <!--
         <dependency>
             <groupId>javax.servlet</groupId>
             <artifactId>javax.servlet-api</artifactId>
             <version>3.1.0</version>
         </dependency>
+        -->
 
         <dependency>
             <groupId>org.junit.jupiter</groupId>
@@ -254,7 +247,6 @@
                             <contextPath>/fediz-idp</contextPath>
                         </contextHandler>
                     </contextHandlers>
-                    <skip>${skipTests}</skip>
                 </configuration>
                 <executions>
                     <execution>
@@ -302,7 +294,6 @@
                                 <include>**/RestITTest.java</include>
                             </includes>
 
-                            <skip>${skipTests}</skip>
                         </configuration>
                     </execution>
                     <execution>
@@ -457,7 +448,7 @@
                                             <outputDirectory>${project.build.directory}</outputDirectory>
                                         </artifactItem>
                                     </artifactItems>
-                                    <outputAbsoluteArtifactFilename>true</outputAbsoluteArtifactFilename>
+
                                     <overWriteSnapshots>true</overWriteSnapshots>
                                     <overWriteIfNewer>true</overWriteIfNewer>
                                     <stripVersion>true</stripVersion>

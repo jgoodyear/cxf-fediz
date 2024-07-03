@@ -26,12 +26,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 
-import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.html.DomElement;
-import com.gargoylesoftware.htmlunit.html.DomNodeList;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-
 import jakarta.servlet.ServletException;
 import org.apache.catalina.Context;
 import org.apache.catalina.LifecycleException;
@@ -43,7 +37,14 @@ import org.apache.cxf.fediz.systests.common.HTTPTestUtils;
 import org.apache.cxf.fediz.tomcat.FederationAuthenticator;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.tomcat.util.net.SSLHostConfig;
+import org.apache.tomcat.util.net.SSLHostConfigCertificate;
 import org.apache.wss4j.dom.engine.WSSConfig;
+import org.htmlunit.FailingHttpStatusCodeException;
+import org.htmlunit.WebClient;
+import org.htmlunit.html.DomElement;
+import org.htmlunit.html.DomNodeList;
+import org.htmlunit.html.HtmlPage;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -81,17 +82,45 @@ public class CustomParametersTest {
         server.getHost().setAutoDeploy(true);
         server.getHost().setDeployOnStartup(true);
 
+//        Connector httpsConnector = new Connector();
+//        httpsConnector.setPort(Integer.parseInt(port));
+//        httpsConnector.setSecure(true);
+//        httpsConnector.setScheme("https");
+//        httpsConnector.setProperty("sslProtocol", "TLS");
+//        httpsConnector.setProperty("SSLEnabled", "true");
+////        httpsConnector.setProperty("keyAlias", "mytomidpkey");
+//        httpsConnector.setProperty("keystorePass", "tompass");
+//        httpsConnector.setProperty("keystoreFile", "test-classes/server.jks");
+//
+//        server.getService().addConnector(httpsConnector);
         Connector httpsConnector = new Connector();
         httpsConnector.setPort(Integer.parseInt(port));
         httpsConnector.setSecure(true);
         httpsConnector.setScheme("https");
-        httpsConnector.setProperty("sslProtocol", "TLS");
+        httpsConnector.setProperty("protocol", "https");
         httpsConnector.setProperty("SSLEnabled", "true");
-//        httpsConnector.setProperty("keyAlias", "mytomidpkey");
-        httpsConnector.setProperty("keystorePass", "tompass");
-        httpsConnector.setProperty("keystoreFile", "test-classes/server.jks");
+        httpsConnector.setProperty("throwOnFailure", "true");
+        httpsConnector.setThrowOnFailure(true);
 
+        SSLHostConfig sslHostConfig = new SSLHostConfig();
+        sslHostConfig.setSslProtocol("TLSv1.2");
+        sslHostConfig.setTruststorePassword("storepass");
+        sslHostConfig.setTruststoreFile("test-classes/clienttrust.jks");
+        sslHostConfig.setProtocols("all");
+        sslHostConfig.setTruststoreType("JKS");
+
+        SSLHostConfigCertificate sslHostConfigCertificate = new SSLHostConfigCertificate(sslHostConfig,
+                SSLHostConfigCertificate.Type.RSA);
+        sslHostConfigCertificate.setCertificateKeyAlias("mytomidpkey");
+        sslHostConfigCertificate.setCertificateKeystorePassword("tompass");
+        sslHostConfigCertificate.setCertificateKeystoreFile("test-classes/server.jks");
+        sslHostConfigCertificate.setCertificateKeystoreType("JKS");
+
+
+        sslHostConfig.addCertificate(sslHostConfigCertificate);
+        httpsConnector.addSslHostConfig(sslHostConfig);
         server.getService().addConnector(httpsConnector);
+        //todo Need to adjust config as per below idp switch...
 
         if (idp) {
             server.getHost().setAppBase("tomcat/idp/webapps");

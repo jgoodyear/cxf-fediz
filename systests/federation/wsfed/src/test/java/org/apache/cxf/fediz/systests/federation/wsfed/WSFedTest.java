@@ -27,17 +27,6 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.Arrays;
 
-import com.gargoylesoftware.htmlunit.CookieManager;
-import com.gargoylesoftware.htmlunit.HttpMethod;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebRequest;
-import com.gargoylesoftware.htmlunit.html.DomElement;
-import com.gargoylesoftware.htmlunit.html.DomNodeList;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.gargoylesoftware.htmlunit.util.NameValuePair;
-
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;
@@ -46,6 +35,18 @@ import org.apache.cxf.fediz.core.ClaimTypes;
 import org.apache.cxf.fediz.tomcat.FederationAuthenticator;
 import org.apache.http.auth.AuthScope;
 import org.apache.http.auth.UsernamePasswordCredentials;
+import org.apache.tomcat.util.net.SSLHostConfig;
+import org.apache.tomcat.util.net.SSLHostConfigCertificate;
+import org.htmlunit.CookieManager;
+import org.htmlunit.HttpMethod;
+import org.htmlunit.WebClient;
+import org.htmlunit.WebRequest;
+import org.htmlunit.html.DomElement;
+import org.htmlunit.html.DomNodeList;
+import org.htmlunit.html.HtmlForm;
+import org.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlSubmitInput;
+import org.htmlunit.util.NameValuePair;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -111,14 +112,27 @@ public class WSFedTest {
         httpsConnector.setPort(Integer.parseInt(port));
         httpsConnector.setSecure(true);
         httpsConnector.setScheme("https");
-        httpsConnector.setProperty("sslProtocol", "TLS");
+        httpsConnector.setProperty("protocol", "https");
         httpsConnector.setProperty("SSLEnabled", "true");
-        httpsConnector.setProperty("keystorePass", "tompass");
-        httpsConnector.setProperty("keystoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("keyAlias", "mytomidpkey");
-        httpsConnector.setProperty("truststorePass", "tompass");
-        httpsConnector.setProperty("truststoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("clientAuth", "want");
+        httpsConnector.setProperty("throwOnFailure", "true");
+        httpsConnector.setThrowOnFailure(true);
+
+        SSLHostConfig sslHostConfig = new SSLHostConfig();
+        sslHostConfig.setSslProtocol("TLSv1.2");
+        sslHostConfig.setTruststorePassword("storepass");
+        sslHostConfig.setTruststoreFile("test-classes/clienttrust.jks");
+        sslHostConfig.setProtocols("all");
+        sslHostConfig.setTruststoreType("JKS");
+
+        SSLHostConfigCertificate sslHostConfigCertificate = new SSLHostConfigCertificate(sslHostConfig,
+                SSLHostConfigCertificate.Type.RSA);
+        sslHostConfigCertificate.setCertificateKeyAlias("mytomidpkey");
+        sslHostConfigCertificate.setCertificateKeystorePassword("tompass");
+        sslHostConfigCertificate.setCertificateKeystoreFile("test-classes/server.jks");
+        sslHostConfigCertificate.setCertificateKeystoreType("JKS");
+
+        sslHostConfig.addCertificate(sslHostConfigCertificate);
+        httpsConnector.addSslHostConfig(sslHostConfig);
 
         if (serverType == ServerType.IDP) {
             server.getHost().setAppBase("tomcat/idp/webapps");

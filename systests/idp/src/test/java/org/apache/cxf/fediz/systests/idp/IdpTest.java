@@ -29,18 +29,6 @@ import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 
-import com.gargoylesoftware.htmlunit.CookieManager;
-import com.gargoylesoftware.htmlunit.FailingHttpStatusCodeException;
-import com.gargoylesoftware.htmlunit.UnexpectedPage;
-import com.gargoylesoftware.htmlunit.WebClient;
-import com.gargoylesoftware.htmlunit.WebResponse;
-import com.gargoylesoftware.htmlunit.html.DomElement;
-import com.gargoylesoftware.htmlunit.html.DomNodeList;
-import com.gargoylesoftware.htmlunit.html.HtmlForm;
-import com.gargoylesoftware.htmlunit.html.HtmlPage;
-import com.gargoylesoftware.htmlunit.html.HtmlSubmitInput;
-import com.gargoylesoftware.htmlunit.xml.XmlPage;
-
 import org.apache.catalina.LifecycleException;
 import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;
@@ -55,6 +43,17 @@ import org.apache.tomcat.util.net.SSLHostConfigCertificate;
 import org.apache.wss4j.dom.engine.WSSConfig;
 import org.apache.xml.security.keys.KeyInfo;
 import org.apache.xml.security.signature.XMLSignature;
+import org.htmlunit.CookieManager;
+import org.htmlunit.FailingHttpStatusCodeException;
+import org.htmlunit.UnexpectedPage;
+import org.htmlunit.WebClient;
+import org.htmlunit.WebResponse;
+import org.htmlunit.html.DomElement;
+import org.htmlunit.html.DomNodeList;
+import org.htmlunit.html.HtmlForm;
+import org.htmlunit.html.HtmlPage;
+import org.htmlunit.html.HtmlSubmitInput;
+import org.htmlunit.xml.XmlPage;
 
 import org.junit.jupiter.api.AfterAll;
 import org.junit.jupiter.api.Assertions;
@@ -86,7 +85,7 @@ public class IdpTest {
 
     private static Tomcat startServer(String port) throws LifecycleException {
         Tomcat server = new Tomcat();
-        server.setHostname("localhost");
+
         server.setPort(0);
         final Path targetDir = Paths.get("target").toAbsolutePath();
         server.setBaseDir(targetDir.toString());
@@ -99,26 +98,27 @@ public class IdpTest {
         httpsConnector.setPort(Integer.parseInt(port));
         httpsConnector.setSecure(true);
         httpsConnector.setScheme("https");
-        httpsConnector.setProperty("protocol", "HTTP/1.1");
-        //httpsConnector.setProperty("clientAuth", "true");
+        httpsConnector.setProperty("protocol", "https");
         httpsConnector.setProperty("SSLEnabled", "true");
         httpsConnector.setProperty("throwOnFailure", "true");
+        httpsConnector.setThrowOnFailure(true);
 
         SSLHostConfig sslHostConfig = new SSLHostConfig();
         sslHostConfig.setSslProtocol("TLSv1.2");
-        sslHostConfig.setTruststorePassword("tompass");
-        sslHostConfig.setTruststoreFile("test-classes/alice_client.jks");
-        sslHostConfig.setProtocols("TLSv1.2");
+        sslHostConfig.setTruststorePassword("storepass");
+        sslHostConfig.setTruststoreFile("test-classes/clienttrust.jks");
+        sslHostConfig.setProtocols("all");
+        sslHostConfig.setTruststoreType("JKS");
 
         SSLHostConfigCertificate sslHostConfigCertificate = new SSLHostConfigCertificate(sslHostConfig,
                 SSLHostConfigCertificate.Type.RSA);
         sslHostConfigCertificate.setCertificateKeyAlias("mytomidpkey");
         sslHostConfigCertificate.setCertificateKeystorePassword("tompass");
         sslHostConfigCertificate.setCertificateKeystoreFile("test-classes/server.jks");
-        sslHostConfigCertificate.setCertificateKeystoreType("RSA");
+        sslHostConfigCertificate.setCertificateKeystoreType("JKS");
+
 
         sslHostConfig.addCertificate(sslHostConfigCertificate);
-
         httpsConnector.addSslHostConfig(sslHostConfig);
 
         Path stsWebapp = targetDir.resolve(server.getHost().getAppBase()).resolve("fediz-idp-sts");
@@ -126,6 +126,7 @@ public class IdpTest {
 
         Path idpWebapp = targetDir.resolve(server.getHost().getAppBase()).resolve("fediz-idp");
         server.addWebapp("/fediz-idp", idpWebapp.toString());
+
 
         server.getService().addConnector(httpsConnector);
         server.start();

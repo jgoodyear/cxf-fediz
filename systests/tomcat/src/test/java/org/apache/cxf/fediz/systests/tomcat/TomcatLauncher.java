@@ -33,6 +33,8 @@ import org.apache.catalina.LifecycleState;
 import org.apache.catalina.connector.Connector;
 import org.apache.catalina.startup.Tomcat;
 import org.apache.cxf.fediz.tomcat.FederationAuthenticator;
+import org.apache.tomcat.util.net.SSLHostConfig;
+import org.apache.tomcat.util.net.SSLHostConfigCertificate;
 
 import static org.junit.jupiter.api.Assertions.assertNotNull;
 
@@ -59,6 +61,7 @@ public abstract class TomcatLauncher {
         Path targetDir = Paths.get("target").toAbsolutePath();
         server.setBaseDir(targetDir.toString());
 
+        server.getHost().setAppBase("tomcat/idp/webapps");
         server.getHost().setAutoDeploy(true);
         server.getHost().setDeployOnStartup(true);
 
@@ -66,14 +69,28 @@ public abstract class TomcatLauncher {
         httpsConnector.setPort(Integer.parseInt(port));
         httpsConnector.setSecure(true);
         httpsConnector.setScheme("https");
-        httpsConnector.setProperty("sslProtocol", "TLS");
+        httpsConnector.setProperty("protocol", "https");
         httpsConnector.setProperty("SSLEnabled", "true");
-        httpsConnector.setProperty("keystoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("keystorePass", "tompass");
-        httpsConnector.setProperty("truststoreFile", "test-classes/server.jks");
-        httpsConnector.setProperty("truststorePass", "tompass");
-        httpsConnector.setProperty("clientAuth", "want");
-        server.getService().addConnector(httpsConnector);
+        //httpsConnector.setProperty("throwOnFailure", "true");
+        httpsConnector.setThrowOnFailure(true);
+
+        SSLHostConfig sslHostConfig = new SSLHostConfig();
+        sslHostConfig.setSslProtocol("TLSv1.2");
+        sslHostConfig.setTruststorePassword("storepass");
+        sslHostConfig.setTruststoreFile("test-classes/clienttrust.jks");
+        sslHostConfig.setProtocols("all");
+        sslHostConfig.setTruststoreType("JKS");
+
+        SSLHostConfigCertificate sslHostConfigCertificate = new SSLHostConfigCertificate(sslHostConfig,
+                SSLHostConfigCertificate.Type.RSA);
+        sslHostConfigCertificate.setCertificateKeyAlias("mytomidpkey");
+        sslHostConfigCertificate.setCertificateKeystorePassword("tompass");
+        sslHostConfigCertificate.setCertificateKeystoreFile("test-classes/server.jks");
+        sslHostConfigCertificate.setCertificateKeystoreType("JKS");
+
+
+        sslHostConfig.addCertificate(sslHostConfigCertificate);
+        httpsConnector.addSslHostConfig(sslHostConfig);
 
         if (null == servletContextName) { // IDP
             server.getHost().setAppBase("tomcat/idp/webapps");

@@ -33,19 +33,19 @@ import org.apache.cxf.fediz.service.idp.domain.Role;
 import org.apache.cxf.fediz.service.idp.service.RoleDAO;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.stereotype.Component;
 import org.springframework.web.filter.GenericFilterBean;
 
+@Component
 public class GrantedAuthorityEntitlements extends GenericFilterBean {
 
     private static final Logger LOG = LoggerFactory.getLogger(GrantedAuthorityEntitlements.class);
 
-    @Autowired
     private RoleDAO roleDAO;
 
     @Override
@@ -78,7 +78,7 @@ public class GrantedAuthorityEntitlements extends GenericFilterBean {
                     LOG.error("Role '{}' not found", roleName);
                 }
             }
-            LOG.debug("Granted Authorities: {}", authorities);
+            LOG.info("Granted Authorities: {}", authorities);
 
             UsernamePasswordAuthenticationToken enrichedAuthentication = new UsernamePasswordAuthenticationToken(
                 currentAuth.getName(), currentAuth.getCredentials(), authorities);
