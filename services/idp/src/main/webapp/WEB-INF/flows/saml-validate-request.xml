@@ -7,9 +7,9 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License. You may obtain a copy of the License at
- 
+
   http://www.apache.org/licenses/LICENSE-2.0
- 
+
   Unless required by applicable law or agreed to in writing,
   software distributed under the License is distributed on an
   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -20,7 +20,7 @@
 <flow xmlns="http://www.springframework.org/schema/webflow"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://www.springframework.org/schema/webflow
-                          http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+                          http://www.springframework.org/schema/webflow/spring-webflow.xsd">
 
     <decision-state id="checkParameterSize">
         <on-entry>
@@ -31,17 +31,17 @@
         <if test="flowScope.parametersOK "
             then="evaluateProtocol" else="viewBadRequest" />
     </decision-state>
-    
+
     <decision-state id="evaluateProtocol">
         <on-entry>
             <set name="flowScope.idpConfig" value="config.getIDP(fedizEntryPoint.getRealm())" />
         </on-entry>
         <if test="requestParameters.wa == 'wsignin1.0'" then="selectWsFedProcess" />
-        <if test="requestParameters.SAMLRequest != null or requestParameters.SAMLResponse != null" 
+        <if test="requestParameters.SAMLRequest != null or requestParameters.SAMLResponse != null"
             then="selectSAMLProcess" else="selectOIDCAuthorizationCodeFlowProcess"
         />
     </decision-state>
-    
+
     <decision-state id="selectWsFedProcess">
         <on-entry>
             <set name="flowScope.wresult" value="requestParameters.wresult" />
@@ -55,7 +55,7 @@
         <if test="requestParameters.wtrealm != null and !requestParameters.wtrealm.isEmpty()"
             then="signinResponse" else="viewBadRequest" />
     </decision-state>
-    
+
     <decision-state id="selectSAMLProcess">
         <on-entry>
             <set name="flowScope.RelayState" value="requestParameters.RelayState" />
@@ -72,7 +72,7 @@
         <if test="requestParameters.SAMLResponse == null or requestParameters.SAMLResponse.isEmpty()"
             then="viewBadRequest" else="signinResponse" />
     </decision-state>
-    
+
     <decision-state id="selectOIDCAuthorizationCodeFlowProcess">
         <on-entry>
             <set name="flowScope.state" value="requestParameters.state" />
@@ -84,7 +84,7 @@
         <if test="requestParameters.state == null or requestParameters.state.isEmpty()"
             then="viewBadRequest" else="signinResponse" />
     </decision-state>
-    
+
     <action-state id="parseSAMLRequest">
         <evaluate expression="authnRequestParser.parseSAMLRequest(flowRequestContext, flowScope.idpConfig,
                                                               flowScope.SAMLRequest, flowScope.SigAlg,
@@ -92,25 +92,25 @@
         <transition to="retrieveConsumerURL"/>
         <transition on-exception="org.apache.cxf.fediz.core.exception.ProcessingException" to="viewBadRequest" />
     </action-state>
-    
+
     <action-state id="retrieveConsumerURL">
-        <evaluate expression="authnRequestParser.retrieveConsumerURL(flowRequestContext)" 
+        <evaluate expression="authnRequestParser.retrieveConsumerURL(flowRequestContext)"
                   result="flowScope.consumerURL"/>
         <transition to="determineRequestType"/>
         <transition on-exception="org.apache.cxf.fediz.core.exception.ProcessingException" to="viewBadRequest" />
     </action-state>
-    
+
     <decision-state id="determineRequestType">
         <if test="flowScope.saml_authn_request == null" then="selectSignOutProcess" else="retrieveRealm" />
     </decision-state>
-    
+
     <action-state id="retrieveRealm">
-        <evaluate expression="authnRequestParser.retrieveRealm(flowRequestContext)" 
+        <evaluate expression="authnRequestParser.retrieveRealm(flowRequestContext)"
                   result="flowScope.realm"/>
         <transition to="signinRequest"/>
         <transition on-exception="org.apache.cxf.fediz.core.exception.ProcessingException" to="viewBadRequest" />
     </action-state>
-    
+
     <subflow-state id="signinRequest" subflow="signinRequest">
         <input name="idpConfig" value="flowScope.idpConfig" />
         <input name="SAMLRequest" value="flowScope.SAMLRequest" />
@@ -140,7 +140,7 @@
             <set name="flowScope.trusted_idp_context" value="currentEvent.attributes.trusted_idp_context"/>
         </transition>
     </subflow-state>
-    
+
      <subflow-state id="signinResponse" subflow="signinResponse">
         <input name="idpConfig" value="flowScope.idpConfig" />
         <input name="wfresh" value="flowScope.wfresh" />
@@ -168,11 +168,11 @@
         <transition on="viewBadRequest" to="viewBadRequest" />
         <transition on="scInternalServerError" to="scInternalServerError" />
     </subflow-state>
-    
+
     <!-- produce RP security token (as String type) -->
     <action-state id="requestRpToken">
         <on-entry>
-            <evaluate expression="authnRequestParser.retrieveRealm(flowRequestContext)" 
+            <evaluate expression="authnRequestParser.retrieveRealm(flowRequestContext)"
                       result="flowScope.realm"/>
             <evaluate expression="stsClientForRpAction.submit(flowRequestContext, flowScope.realm, flowScope.home_realm)"
                       result="flowScope.rpTokenElement"/>
@@ -182,22 +182,22 @@
         <transition on-exception="org.apache.cxf.fediz.core.exception.ProcessingException" to="viewBadRequest" />
         <transition on-exception="java.lang.Throwable" to="scInternalServerError" />
     </action-state>
-    
+
     <action-state id="produceSAMLResponse">
         <on-entry>
-            <evaluate expression="authnRequestParser.retrieveConsumerURL(flowRequestContext)" 
+            <evaluate expression="authnRequestParser.retrieveConsumerURL(flowRequestContext)"
                       result="flowScope.consumerURL"/>
-            <evaluate expression="authnRequestParser.retrieveRequestId(flowRequestContext)" 
+            <evaluate expression="authnRequestParser.retrieveRequestId(flowRequestContext)"
                       result="flowScope.requestId"/>
-            <evaluate expression="authnRequestParser.retrieveRequestIssuer(flowRequestContext)" 
+            <evaluate expression="authnRequestParser.retrieveRequestIssuer(flowRequestContext)"
                       result="flowScope.requestIssuer"/>
         </on-entry>
         <evaluate expression="samlResponseCreator.createSAMLResponse(flowRequestContext, flowScope.idpConfig, flowScope.rpTokenElement,
                                                                      flowScope.consumerURL, flowScope.requestId, flowScope.requestIssuer)"
-                  result="flowScope.rpResponse"/>                                               
+                  result="flowScope.rpResponse"/>
         <transition to="formResponseView" />
     </action-state>
-    
+
     <!-- normal exit point for login -->
     <!-- browser redirection (self-submitted form 'samlsigninresponseform.jsp') -->
     <end-state id="formResponseView" view="samlsigninresponseform">
@@ -207,43 +207,43 @@
             <evaluate expression="flowScope.rpResponse" result="requestScope.samlResponse" />
         </on-entry>
     </end-state>
-    
+
     <action-state id="processTrustedIdpProtocol">
         <evaluate expression="trustedIdpProtocolAction.mapSignInRequest(flowRequestContext, flowScope.home_realm)"
                       result="flowScope.remoteIdpUrl"/>
         <transition to="redirectToTrustedIDP" />
         <transition on-exception="java.lang.Throwable" to="scInternalServerError" />
     </action-state>
-    
+
     <decision-state id="selectSignOutProcess">
         <if test="flowScope.idpConfig.rpSingleSignOutConfirmation == true
             or flowScope.idpConfig.rpSingleSignOutCleanupConfirmation == true"
             then="viewSignoutConfirmation" else="produceSAMLLogoutResponse" />
     </decision-state>
-    
+
     <view-state id="viewSignoutConfirmation" view="signoutconfirmationresponse">
         <transition on="submit" to="produceSAMLLogoutResponse"/>
         <transition on="cancel" to="viewBadLogoutRequestResponse" />
     </view-state>
-    
+
     <action-state id="produceSAMLLogoutResponse">
         <on-entry>
-            <evaluate expression="authnRequestParser.retrieveRequestId(flowRequestContext)" 
+            <evaluate expression="authnRequestParser.retrieveRequestId(flowRequestContext)"
                       result="flowScope.requestId"/>
-            <evaluate expression="authnRequestParser.retrieveRequestIssuer(flowRequestContext)" 
+            <evaluate expression="authnRequestParser.retrieveRequestIssuer(flowRequestContext)"
                       result="flowScope.requestIssuer"/>
         </on-entry>
-        <evaluate expression="samlResponseCreator.createSAMLLogoutResponse(flowRequestContext, flowScope.idpConfig, 
+        <evaluate expression="samlResponseCreator.createSAMLLogoutResponse(flowRequestContext, flowScope.idpConfig,
         		flowScope.consumerURL, flowScope.requestId)"
-                  result="flowScope.logoutResponse"/>                                               
+                  result="flowScope.logoutResponse"/>
         <transition to="invalidateSessionAction" />
     </action-state>
-    
+
     <decision-state id="invalidateSessionAction">
         <on-entry>
             <!-- store the realmConfigMap in the request map before we invalidate the session below.
             Its needed in the signoutresponse.jsp page -->
-            <set name="externalContext.requestMap.realmConfigMap" 
+            <set name="externalContext.requestMap.realmConfigMap"
                 value="externalContext.sessionMap.realmConfigMap"/>
             <evaluate expression="homeRealmReminder.removeCookie(flowRequestContext)" />
             <evaluate expression="logoutAction.submit(flowRequestContext)" />
@@ -251,7 +251,7 @@
         <if test="flowScope.idpConfig.isAutomaticRedirectToRpAfterLogout()"
             then="signOutFormResponseView" else="showLogoutResponsePage" />
     </decision-state>
-    
+
     <!-- normal exit point for logout -->
     <!-- browser redirection (self-submitted form 'samlsignoutresponseform.jsp') -->
     <end-state id="signOutFormResponseView" view="samlsignoutresponseform">
@@ -261,14 +261,14 @@
             <evaluate expression="flowScope.logoutResponse" result="requestScope.samlResponse" />
         </on-entry>
     </end-state>
-    
+
     <!-- normal exit point for logout -->
     <end-state id="showLogoutResponsePage" view="signoutresponse" />
 
     <!-- abnormal exit point -->
     <decision-state id="viewBadRequest">
         <on-entry>
-            <evaluate expression="authnRequestParser.retrieveConsumerURL(flowRequestContext)" 
+            <evaluate expression="authnRequestParser.retrieveConsumerURL(flowRequestContext)"
                       result="requestScope.samlAction"/>
         </on-entry>
         <!-- See if we managed to at least parse the request to get the response URL -->
@@ -277,47 +277,59 @@
         <if test="flowScope.saml_logout_request != null"
             then="viewBadLogoutRequestResponse" else="viewBadRequestResponse"/>
     </decision-state>
-    
+
     <end-state id="viewBadRequestResponse" view="samlsigninresponseform">
         <on-entry>
-            <evaluate expression="authnRequestParser.retrieveConsumerURL(flowRequestContext)" 
+            <evaluate expression="authnRequestParser.retrieveConsumerURL(flowRequestContext)"
                       result="requestScope.samlAction"/>
-            <evaluate expression="authnRequestParser.retrieveRequestId(flowRequestContext)" 
+            <evaluate expression="authnRequestParser.retrieveRequestId(flowRequestContext)"
                       result="flowScope.requestId"/>
             <evaluate expression="flowScope.RelayState" result="requestScope.relayState" />
             <evaluate expression="samlResponseErrorCreator.createSAMLResponse(flowRequestContext, false,
             	true, flowScope.idpConfig, flowScope.requestId, requestScope.samlAction)"
-                      result="requestScope.samlResponse"/>     
+                      result="requestScope.samlResponse"/>
         </on-entry>
     </end-state>
-    
+
     <end-state id="viewBadLogoutRequestResponse" view="samlsignoutresponseform">
         <on-entry>
-            <evaluate expression="authnRequestParser.retrieveConsumerURL(flowRequestContext)" 
+            <evaluate expression="authnRequestParser.retrieveConsumerURL(flowRequestContext)"
                       result="requestScope.samlAction"/>
-            <evaluate expression="authnRequestParser.retrieveRequestId(flowRequestContext)" 
+            <evaluate expression="authnRequestParser.retrieveRequestId(flowRequestContext)"
                       result="flowScope.requestId"/>
             <evaluate expression="flowScope.RelayState" result="requestScope.relayState" />
             <evaluate expression="samlResponseErrorCreator.createSAMLResponse(flowRequestContext, true,
             	true, flowScope.idpConfig, flowScope.requestId, requestScope.samlAction)"
-                      result="requestScope.samlResponse"/>     
+                      result="requestScope.samlResponse"/>
         </on-entry>
     </end-state>
-    
+
     <!-- abnormal exit point : Http 400 Bad Request -->
     <end-state id="viewBadRequestParsingError" view="genericerror">
         <on-entry>
+            <!--
             <evaluate
                 expression="externalContext.nativeResponse.setStatus(400,'Error parsing SAML Request')" />
+                -->
             <set name="requestScope.reason" value="'Error parsing SAML Request'" />
+            <evaluate
+                    expression="externalContext.sessionMap.put('status', 400)"/>
+            <evaluate
+                    expression="externalContext.sessionMap.put('reason', 'Error parsing SAML Request')"/>
         </on-entry>
     </end-state>
 
     <!-- abnormal exit point : Http 500 Internal Server Error -->
     <end-state id="scInternalServerError" view="genericerror">
         <on-entry>
+            <!--
             <evaluate
                 expression="externalContext.nativeResponse.setStatus(500,'IDP is unavailable, please contact the administrator')" />
+                -->
+            <evaluate
+                    expression="externalContext.sessionMap.put('status', 500)"/>
+            <evaluate
+                    expression="externalContext.sessionMap.put('reason', 'IDP is unavailable, please contact the administrator')"/>
             <set name="requestScope.reason"
                 value="'IDP is unavailable, please contact the administrator'" />
             <set name="requestScope.stateException"
@@ -326,14 +338,14 @@
                 value="flowScope.rootCauseException" />
         </on-entry>
     </end-state>
-    
+
     <end-state id="redirectToLocalIDP" view="externalRedirect:#{flowScope.localIdpUrl}">
         <on-entry>
             <evaluate expression="localRedirectCreator.createRedirectURL(flowRequestContext, flowScope.idpConfig)"
                       result="flowScope.localIdpUrl"/>
         </on-entry>
     </end-state>
-    
+
     <!-- redirect to remote idp -->
     <end-state id="redirectToTrustedIDP" view="externalRedirect:#{flowScope.remoteIdpUrl}" />
 

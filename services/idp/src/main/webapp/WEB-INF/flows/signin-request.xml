@@ -7,9 +7,9 @@
   to you under the Apache License, Version 2.0 (the
   "License"); you may not use this file except in compliance
   with the License. You may obtain a copy of the License at
- 
+
   http://www.apache.org/licenses/LICENSE-2.0
- 
+
   Unless required by applicable law or agreed to in writing,
   software distributed under the License is distributed on an
   "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
@@ -21,7 +21,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="
         http://www.springframework.org/schema/webflow
-        http://www.springframework.org/schema/webflow/spring-webflow-2.0.xsd">
+        http://www.springframework.org/schema/webflow/spring-webflow.xsd">
 
     <input name="idpConfig" />
     <input name="wfresh" />
@@ -31,30 +31,30 @@
     <input name="protocol" />
     <input name="return_address" />
     <input name="request_context" />
-    
+
     <!-- ===== Home Realm Discovery ===== -->
-    
+
     <decision-state id="processHRDSExpression">
         <on-entry>
-            <evaluate expression="processHRDSExpressionAction.submit(flowRequestContext, flowScope.home_realm)" 
+            <evaluate expression="processHRDSExpressionAction.submit(flowRequestContext, flowScope.home_realm)"
                       result="flowScope.home_realm" />
         </on-entry>
         <if test="flowScope.home_realm == null or flowScope.home_realm.trim().isEmpty()"
             then="provideIDPListForUser" else="checkIsThisIDP" />
     </decision-state>
-    
+
     <decision-state id="provideIDPListForUser">
         <if test="flowScope.idpConfig.trustedIdps == null or idpConfig.trustedIdps.isEmpty()"
             then="checkDefaultToThisIDP" />
         <if test="flowScope.idpConfig.isProvideIdpList() == false"
             then="checkDefaultToThisIDP" else="showIDPList" />
     </decision-state>
-    
+
     <decision-state id="checkDefaultToThisIDP">
         <if test="flowScope.idpConfig.isUseCurrentIdp()" then="homeRealmSignInEntryPoint"
             else="viewBadRequest" />
     </decision-state>
-    
+
     <view-state id="showIDPList" view="idplist" model="trustedIDPSelection">
         <var name="trustedIDPSelection"
             class="org.apache.cxf.fediz.service.idp.model.TrustedIDPSelection" />
@@ -73,29 +73,29 @@
         <transition on="cancel" to="checkDefaultToThisIDP"
             bind="false" validate="false" />
     </view-state>
-    
+
     <!-- Home Realm is known then we can store it in cookie -->
     <decision-state id="checkIsThisIDP">
         <if test="flowScope.idpConfig.realm.equals(flowScope.home_realm)"
             then="homeRealmSignInEntryPoint" else="checkRemoteIdpToken" />
     </decision-state>
-    
+
     <!-- ===== Realm independent ===== -->
-    
+
     <action-state id="validateReturnAddress">
         <evaluate expression="commonsURLValidator.isValid(flowRequestContext, flowScope.return_address)
                               and endpointAddressValidator.isValidSigninAddress(flowRequestContext, flowScope.return_address, flowScope.realm)"/>
         <transition on="yes" to="requestRpToken" />
         <transition on="no" to="viewBadRequest" />
     </action-state>
-    
+
     <!-- ===== Home Realm != this realm ===== -->
-    
+
     <decision-state id="checkRemoteIdpToken">
         <if test="externalContext.sessionMap[flowScope.home_realm] != null"
             then="checkRemoteIdpTokenExpiry" else="redirectToTrustedIDP" />
     </decision-state>
-    
+
     <action-state id="checkRemoteIdpTokenExpiry">
         <evaluate
             expression="idpTokenExpiredAction.isTokenExpired(flowScope.home_realm, flowRequestContext) or
@@ -107,15 +107,15 @@
         </transition>
         <transition on-exception="java.lang.Throwable" to="viewBadRequest" />
     </action-state>
-    
+
     <!-- ===== Home Realm == this realm ===== -->
-    
+
     <decision-state id="homeRealmSignInEntryPoint">
         <on-entry>
             <!-- Here, home realm is guaranteed to be THIS realm -->
             <set name="flowScope.home_realm" value="flowScope.idpConfig.realm" />
         </on-entry>
-            
+
         <!-- check presence of cached IDP token for THIS realm -->
         <if test="externalContext.sessionMap[flowScope.home_realm] == null"
             then="cacheSecurityToken" else="checkLocalIdPTokenExpiry" />
@@ -147,7 +147,7 @@
             <set name="flowScope.idpToken" value="externalContext.sessionMap[flowScope.home_realm]" />
         </transition>
     </action-state>
-    
+
     <!-- ============================================================================================================= -->
 
     <!-- normal exit point -->
@@ -158,7 +158,7 @@
 
     <!-- abnormal exit point -->
     <end-state id="viewBadRequest" />
-    
+
     <!-- redirects to requestor idp -->
     <end-state id="redirectToTrustedIDP">
         <on-entry>

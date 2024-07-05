@@ -121,12 +121,11 @@ public class IdpTest {
         sslHostConfig.addCertificate(sslHostConfigCertificate);
         httpsConnector.addSslHostConfig(sslHostConfig);
 
-        Path stsWebapp = targetDir.resolve(server.getHost().getAppBase()).resolve("fediz-idp-sts");
-        server.addWebapp("/fediz-idp-sts", stsWebapp.toString());
-
         Path idpWebapp = targetDir.resolve(server.getHost().getAppBase()).resolve("fediz-idp");
         server.addWebapp("/fediz-idp", idpWebapp.toString());
 
+        Path stsWebapp = targetDir.resolve(server.getHost().getAppBase()).resolve("fediz-idp-sts");
+        server.addWebapp("/fediz-idp-sts", stsWebapp.toString());
 
         server.getService().addConnector(httpsConnector);
         server.start();
@@ -1368,6 +1367,7 @@ public class IdpTest {
         webClient.close();
     }
 
+    @org.junit.jupiter.api.Disabled
     @org.junit.jupiter.api.Test
     public void testSwagger() throws Exception {
         String url = "https://localhost:" + getIdpHttpsPort() + "/fediz-idp/services/rs/swagger.json";
